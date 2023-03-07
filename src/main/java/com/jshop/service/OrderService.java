@@ -1,0 +1,17 @@
+package com.jshop.service;
+
+import com.jshop.dto.OrderDto;
+
+import java.util.List;
+
+public interface OrderService {
+    OrderDto create(OrderDto item);
+
+    OrderDto update(int orderId, OrderDto item);
+
+    OrderDto findById(int orderId);
+
+    void delete(int orderId);
+
+    List<OrderDto> findAll();
+}
