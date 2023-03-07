@@ -3,9 +3,9 @@ package com.jshop.service;
 
 import com.jshop.dto.Cart;
 import com.jshop.model.Account;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,14 +46,5 @@ public class CartService {
             }
         }
         return amount;
-    }
-
-    public boolean addReceipt(HttpSession session, Account account){
-        Map<Integer, Cart> cartMap = (Map<Integer, Cart>) session.getAttribute("carts");
-        if (cartMap != null){
-
-        }
-
-        return true;
     }
 }

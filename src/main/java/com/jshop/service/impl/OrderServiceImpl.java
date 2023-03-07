@@ -55,4 +55,13 @@ public class OrderServiceImpl implements OrderService {
                 .map((order) -> this.modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
         return list;
     }
+
+    @Override
+    public List<OrderDto> findAllByUsername(String username) {
+        List<Order> orders = this.orderRepo.findAllByAccount_Username(username);
+
+        List<OrderDto> list = orders.stream()
+                .map((order) -> this.modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
+        return list;
+    }
 }

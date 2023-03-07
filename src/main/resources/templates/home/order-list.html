@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/home/layout-home}">
+<head>
+    <meta charset="utf-8">
+    <title>January Shop - Shop Thời Trang</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="#">Tài khoản</a></li>
+                    <li class="breadcrumb-item active">Danh sách đặt hàng</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <!-- Order list Start -->
+        <div class="wishlist-page">
+            <div class="container-fluid">
+                <div class="wishlist-page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th>Mã đơn hàng</th>
+                                        <th>Địa chỉ nhận hàng</th>
+                                        <th>Ngày đặt hàng</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="align-middle">
+                                    <th:block th:each="od : ${orders}">
+                                        <tr>
+                                            <td th:text="${od.order_id}"></td>
+                                            <td th:text="${od.address}"></td>
+                                            <td th:text="${od.createDate}"></td>
+                                            <td th:text="${od.amount}"></td>
+                                            <td th:if="${od.status}">Đang giao hàng</td>
+                                            <td th:unless="${od.status}">Chờ xác nhận</td>
+                                            <td><a th:href="@{/orderDetails/{orderId}(orderId=${od.order_id})}"
+                                                   class="btn-cart">Xem</a></td>
+                                        </tr>
+                                    </th:block>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Order list End -->
+    </div>
+</body>
+</html>

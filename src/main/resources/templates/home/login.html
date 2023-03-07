@@ -26,6 +26,11 @@
                     <div class="col-lg-6">
                         <div class="login-form">
                             <form th:action="@{/security/login}" method="post">
+                            <div class="row" th:if="${message}">
+                                <div class="col-md">
+                                    <label style="color: red">[[${message}]]</label>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Email/ Tài khoản</label>
@@ -34,8 +39,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label>Mật khẩu</label>
-                                    <input name="password" id="password" class="form-control" required
-                                           type="text" placeholder="Password">
+                                    <input name="password" type="password" id="password" class="form-control" required
+                                           placeholder="Password">
                                 </div>
                                 <div class="col-md-12">
                                     <div class="custom-control custom-checkbox">

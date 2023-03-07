@@ -28,6 +28,7 @@
                         <div class="checkout-inner">
                             <div class="billing-address">
                                 <h2>Địa chỉ thanh toán</h2>
+                                <form method="post">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Họ</label>
@@ -49,6 +50,7 @@
                                         <input class="form-control" type="text" placeholder="Số điện thoại"
                                                th:value="${user.phone}">
                                     </div>
+
                                     <div class="col-md-12">
                                         <label>Địa chỉ</label>
                                         <input class="form-control" type="text" name="address"
@@ -58,7 +60,13 @@
                                         <label>Ghi chú</label>
                                         <input class="form-control" type="text" placeholder="Ghi chú">
                                     </div>
+                                    <div class="col-md-12">
+                                            <button class="btn btn-cart" type="submit"
+                                                    th:onclick="pay()">Đặt hàng</button>
+                                    </div>
+
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -108,9 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="checkout-btn">
-                                    <button th:onclick="pay()">Đặt hàng</button>
-                                </div>
+
                             </div>
                         </div>
                     </div>

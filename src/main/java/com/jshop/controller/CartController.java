@@ -1,4 +1,4 @@
-package com.jshop.controller.api;
+package com.jshop.controller;
 
 import com.jshop.dto.AccountDto;
 import com.jshop.dto.Cart;
@@ -8,15 +8,19 @@ import com.jshop.model.Account;
 import com.jshop.model.Order;
 import com.jshop.model.OrderDetail;
 import com.jshop.service.*;
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -37,12 +41,12 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cart(Model model, Principal principal, HttpSession session){
-//        if (principal == null){
-//            model.addAttribute("error"
-//                    , "Vui lòng đăng nhập để xử dụng giỏ hàng!");
-//            return "redirect:/security/login";
-//
-//        }
+        if (principal == null){
+            model.addAttribute("error"
+                    , "Vui lòng đăng nhập để xử dụng giỏ hàng!");
+            return "redirect:/security/login";
+
+        }
 
         Map<Integer, Cart> cartMap = (Map<Integer, Cart>) session.getAttribute("carts");
         if (cartMap != null){
@@ -63,11 +67,11 @@ public class CartController {
 
     @GetMapping("/checkout")
     public String checkout(Model model, Principal principal, HttpSession session){
-//        if (principal == null){
-//            model.addAttribute("message"
-//                    , "Vui lòng đăng nhập để sử dụng chức năng này!");
-//            return "redirect:/security/login";
-//        }
+        if (principal == null){
+            model.addAttribute("message"
+                    , "Vui lòng đăng nhập để sử dụng chức năng này!");
+            return "redirect:/security/login";
+        }
         Map<Integer, Cart> cartMap = (Map<Integer, Cart>) session.getAttribute("carts");
         AccountDto account = accountService.findByUsername(principal.getName());
         model.addAttribute("user", account);
@@ -76,7 +80,8 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public String addReceipt(HttpSession session, Principal principal, Model model){
+    public String addReceipt(HttpSession session, Principal principal, Model model
+            , @RequestParam("address") String address){
         if (principal == null){
             model.addAttribute("message"
                     , "Vui lòng đăng nhập để xử dụng giỏ hàng!");
@@ -85,7 +90,6 @@ public class CartController {
 
         Map<Integer, Cart> cartMap = (Map<Integer, Cart>) session.getAttribute("carts");
         if (cartMap != null){
-            String address = (String) model.getAttribute("address");
             AccountDto account = this.accountService.findByUsername(principal.getName());
             OrderDto order = new OrderDto();
             order.setAddress(address);
@@ -98,6 +102,8 @@ public class CartController {
                 OrderDetailDto orderDetail = new OrderDetailDto();
                 orderDetail.setQuantity(c.getQuantity());
                 orderDetail.setOrder(newOrder);
+                orderDetail.setSize(c.getSize());
+                orderDetail.setColor(c.getColor());
                 orderDetail.setProduct(productService.findById(c.getProductId()));
                 OrderDetailDto newOrderDetail = this.orderDetailService.create(orderDetail);
             }
@@ -106,5 +112,19 @@ public class CartController {
         session.removeAttribute("carts");
 
         return "redirect:/cart";
+    }
+
+
+    public class MyFormModel {
+        private String address;
+
+        // getter and setter
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
     }
 }

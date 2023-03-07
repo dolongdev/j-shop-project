@@ -14,4 +14,6 @@ public interface OrderService {
     void delete(int orderId);
 
     List<OrderDto> findAll();
+
+    List<OrderDto> findAllByUsername(String username);
 }

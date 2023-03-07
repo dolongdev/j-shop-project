@@ -1,6 +1,7 @@
 package com.jshop.service;
 
 import com.jshop.dto.OrderDetailDto;
+import com.jshop.model.Order;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface OrderDetailService {
     void delete(int id);
 
     List<OrderDetailDto> findAll();
+
+    List<OrderDetailDto> findAllByOrder(int orderId);
 }

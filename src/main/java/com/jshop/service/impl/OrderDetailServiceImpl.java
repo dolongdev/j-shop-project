@@ -1,10 +1,13 @@
 package com.jshop.service.impl;
 
 import com.jshop.dto.OrderDetailDto;
+import com.jshop.dto.OrderDto;
 import com.jshop.exceptions.ResourceNotFoundException;
+import com.jshop.model.Order;
 import com.jshop.model.OrderDetail;
 import com.jshop.respository.OrderDetailRepo;
 import com.jshop.service.OrderDetailService;
+import com.jshop.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     OrderDetailRepo orderDetailRepo;
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    OrderService orderService;
 
     @Override
     public OrderDetailDto create(OrderDetailDto item) {
@@ -51,6 +57,19 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Override
     public List<OrderDetailDto> findAll() {
         List<OrderDetail> orderDetails = this.orderDetailRepo.findAll();
+
+        List<OrderDetailDto> list = orderDetails.stream()
+                .map((orderDetail) -> this.modelMapper.map(orderDetail, OrderDetailDto.class))
+                .collect(Collectors.toList());
+        return list;
+    }
+
+    @Override
+    public List<OrderDetailDto> findAllByOrder(int orderId) {
+        OrderDto orderDto = this.orderService.findById(orderId);
+
+        List<OrderDetail> orderDetails = this.orderDetailRepo
+                .findAllByOrder(this.modelMapper.map(orderDto, Order.class));
 
         List<OrderDetailDto> list = orderDetails.stream()
                 .map((orderDetail) -> this.modelMapper.map(orderDetail, OrderDetailDto.class))

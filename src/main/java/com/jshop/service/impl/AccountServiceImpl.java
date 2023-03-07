@@ -40,6 +40,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account getAccount(String username) {
+        Account account = this.accountRepo.findById(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "Username", username));
+        return account;
+    }
+
+    @Override
     public void delete(String username) {
         Account account = this.accountRepo.findById(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "Username", username));
