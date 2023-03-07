@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/home/layout-home}">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng kí</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Đăng kí</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <!-- Register Start -->
+        <div class="login">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="register-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Họ tên</label>
+                                    <input class="form-control" type="text" placeholder="Họ tên">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Tên đăng nhập</label>
+                                    <input class="form-control" type="text" placeholder="Tên đăng nhập">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>E-mail</label>
+                                    <input class="form-control" type="text" placeholder="E-mail">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Số điện thoại</label>
+                                    <input class="form-control" type="text" placeholder="Số điện thoại">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Mật khẩu</label>
+                                    <input class="form-control" type="text" placeholder="Mật khẩu">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Nhập lại mật khẩu</label>
+                                    <input class="form-control" type="text" placeholder="Nhập lại mật khẩu">
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn">Đăng kí</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Register End -->
+    </div>
+</body>
+</html>

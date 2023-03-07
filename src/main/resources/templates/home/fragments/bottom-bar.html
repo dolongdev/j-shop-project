@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- Bottom Bar Start -->
+<div class="bottom-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="img/Screenshot 2023-01-30 162732.png" alt="Logo">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="search">
+                    <input type="text" placeholder="Tìm kiếm">
+                    <button><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="account">
+                    <a href="wishlist.html" class="btn wishlist">
+                        <i class="fa fa-heart"></i>
+                        <span>(0)</span>
+                    </a>
+                    <a th:href="@{/cart}" class="btn cart">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span id="cartCounter" th:text="${cartCounter}"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bottom Bar End -->

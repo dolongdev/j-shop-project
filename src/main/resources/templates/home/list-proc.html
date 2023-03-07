@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/home/layout-home}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+</head>
+<body>
+    <div layout:fragment="content">
+      <div th:replace="/home/fragments/bread-crumb"></div>
+      <div th:replace="/home/fragments/list-proc"></div>
+    </div>
+</body>
+</html>

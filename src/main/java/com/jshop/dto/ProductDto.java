@@ -19,7 +19,8 @@ public class ProductDto {
     private String detail;
     private int viewCounts;
     private float price;
+    private String image;
 
     Account account;
-    Category category;
+    CategoryDto category;
 }

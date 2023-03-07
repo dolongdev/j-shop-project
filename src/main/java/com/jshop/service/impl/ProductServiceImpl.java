@@ -1,5 +1,6 @@
 package com.jshop.service.impl;
 
+import com.jshop.dto.CategoryDto;
 import com.jshop.dto.ProductDto;
 import com.jshop.exceptions.ResourceNotFoundException;
 import com.jshop.model.Category;
@@ -8,6 +9,10 @@ import com.jshop.respository.ProductRepo;
 import com.jshop.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(item.getName());
         product.setDescription(item.getDescription());
         product.setDetail(item.getDetail());
-        product.setCategory(item.getCategory());
+        product.setCategory(this.modelMapper.map(item.getCategory(), Category.class));
         this.productRepo.save(product);
         return this.modelMapper.map(product, ProductDto.class);
     }
@@ -54,6 +59,48 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> findAll() {
         List<Product> products = this.productRepo.findAll();
+
+        List<ProductDto> list = products.stream()
+                .map((product) -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return list;
+    }
+
+    @Override
+    public List<ProductDto> findAllByCategory(CategoryDto category) {
+        List<Product> products = this.productRepo
+                .findAllByCategory(this.modelMapper.map(category, Category.class));
+
+        List<ProductDto> list = products.stream()
+                .map((product) -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return list;
+    }
+
+    @Override
+    public List<ProductDto> findAllSort(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Sort sort = (sortDir.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending());
+
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Product> productPage = this.productRepo.findAll(p);
+
+        List<Product> products = productPage.getContent();
+
+        List<ProductDto> list = products.stream()
+                .map((product) -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return list;
+    }
+
+    @Override
+    public List<ProductDto> searchProc(String keyword, int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Sort sort = (sortDir.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending());
+
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Product> productPage = this.productRepo.findByNameContaining(keyword, p);
+
+        List<Product> products = productPage.getContent();
 
         List<ProductDto> list = products.stream()
                 .map((product) -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());

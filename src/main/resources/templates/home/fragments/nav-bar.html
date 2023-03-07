@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- Nav Bar Start -->
+<div class="nav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <a href="#" class="navbar-brand">MENU</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav mr-auto">
+                    <a th:href="@{/home}" class="nav-item nav-link active">Trang chủ</a>
+                    <a th:href="@{/products}" class="nav-item nav-link">Tất cả sản phẩm</a>
+                    <!-- <a href="product-detail.html" class="nav-item nav-link">Product Detail</a> -->
+                    <!-- <a href="cart.html" class="nav-item nav-link">Cart</a>
+                    <a href="checkout.html" class="nav-item nav-link">Checkout</a>
+                    <a href="my-account.html" class="nav-item nav-link">My Account</a> -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Thời trang nam</a>
+                        <div class="dropdown-menu">
+                            <a href="wishlist.html" class="dropdown-item">Áo thun nam</a>
+                            <a href="login.html" class="dropdown-item">Áo khoác nam</a>
+                            <a href="#" class="dropdown-item">Hoddie nam</a>
+                            <a href="#" class="dropdown-item">Quần nam</a>
+                            <a href="#" class="dropdown-item">Ví nam</a>
+                            <a href="#" class="dropdown-item">Balo nam</a>
+                            <a href="#" class="dropdown-item">Phụ kiện nam</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Thời trang nữ</a>
+                        <div class="dropdown-menu">
+                            <a href="wishlist.html" class="dropdown-item">Áo thun nữ</a>
+                            <a href="login.html" class="dropdown-item">Áo Croptop</a>
+                            <a href="#" class="dropdown-item">Hoddie nữ</a>
+                            <a href="#" class="dropdown-item">Áo khoác nữ</a>
+                            <a href="#" class="dropdown-item">Phụ kiện nữ</a>
+                        </div>
+                    </div>
+                    <a href="my-account.html" class="nav-item nav-link">Kiểm tra đơn hàng</a>
+                    <a th:href="@{/contact}" class="nav-item nav-link">Liên Hệ</a>
+                </div>
+<!--                <div class="navbar-nav ml-auto">-->
+<!--                    <div class="nav-item dropdown">-->
+<!--                        <th:block th:unless="${#request.remoteUser}">-->
+<!--                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Tài khoản</a>-->
+<!--                            <div class="dropdown-menu">-->
+<!--                                <a th:href="@{/security/login}" class="dropdown-item">Đăng nhập</a>-->
+<!--                                <a th:href="@{/security/register}" class="dropdown-item">Đăng kí</a>-->
+<!--                                <a href="" class="dropdown-item">Quên mật khẩu</a>-->
+<!--                            </div>-->
+<!--                        </th:block>-->
+<!--                        <th:block th:if="${#request.remoteUser}">-->
+<!--                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">-->
+<!--                                [[${#request.remoteUser}]]</a>-->
+<!--                            <div class="dropdown-menu">-->
+<!--                                <a th:href="@{/security/login}" class="dropdown-item">Tài khoản </a>-->
+<!--                                <a th:href="@{/}" class="dropdown-item">Đơn hàng</a>-->
+<!--                                <a th:href="@{/security/logoff}" class="dropdown-item">Đăng xuất</a>-->
+<!--                            </div>-->
+<!--                        </th:block>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- Nav Bar End -->

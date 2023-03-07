@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/home/layout-home}">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Thanh toán</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <!-- Checkout Start -->
+        <div class="checkout">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="checkout-inner">
+                            <div class="billing-address">
+                                <h2>Địa chỉ thanh toán</h2>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Họ</label>
+                                        <input class="form-control" type="text" placeholder="Họ"
+                                               th:value="${user.firstName}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Tên</label>
+                                        <input class="form-control" type="text" placeholder="Tên"
+                                                th:value="${user.lastName}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                        <input class="form-control" type="text" placeholder="E-mail"
+                                               th:value="${user.email}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Số điện thoại</label>
+                                        <input class="form-control" type="text" placeholder="Số điện thoại"
+                                               th:value="${user.phone}">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Địa chỉ</label>
+                                        <input class="form-control" type="text" name="address"
+                                               placeholder="Số nhà, phường, quận, thành phố,..">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Ghi chú</label>
+                                        <input class="form-control" type="text" placeholder="Ghi chú">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="checkout-inner">
+                            <div class="checkout-summary">
+                                <h1>Tổng tiền giỏ hàng</h1>
+                                <p class="sub-total">Tạm tính<span th:text="${amount}"></span></p>
+                                <p class="ship-cost">Phí vận chuyển<span>$1</span></p>
+                                <h2>Tổng cộng<span th:text="${amount}"></span></h2>
+                            </div>
+
+                            <div class="checkout-payment">
+                                <div class="payment-methods">
+                                    <h1>Phương thức thanh toán</h1>
+                                    <div class="payment-method">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" id="payment-1" name="payment">
+                                            <label class="custom-control-label" for="payment-1">Thanh toán khi giao hàng<table></table></label>
+                                        </div>
+                                        <div class="payment-content" id="payment-1-show">
+                                            <p>
+                                                Kháng hàng thanh toán tiền khi nhận được hàng.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="payment-method">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" id="payment-2" name="payment">
+                                            <label class="custom-control-label" for="payment-2">Chuyển khoản qua ngân hàng</label>
+                                        </div>
+                                        <div class="payment-content" id="payment-2-show">
+                                            <p>
+                                                Khách hàng chuyển khoản qua ngân hàng Techcombank Nguyen Van A số tài khoản 084638474728638 kèm ghi chú mã đơn hàng.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="payment-method">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" id="payment-3" name="payment">
+                                            <label class="custom-control-label" for="payment-3">Thanh toán qua ví điện tử</label>
+                                        </div>
+                                        <div class="payment-content" id="payment-3-show">
+                                            <p>
+                                                Khách hàng chuyển tiền qua số Momo 0935946633 Nguyen Van A.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkout-btn">
+                                    <button th:onclick="pay()">Đặt hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Checkout End -->
+    </div>
+</body>
+</html>

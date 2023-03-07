@@ -15,4 +15,8 @@ public class Cart {
     private String color;
     private String size;
     private float total;
+
+    public double getTotal() {
+        return price * quantity;
+    }
 }

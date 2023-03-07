@@ -21,6 +21,7 @@ public class Product {
     private String detail;
     private int viewCounts;
     private float price;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "username")
