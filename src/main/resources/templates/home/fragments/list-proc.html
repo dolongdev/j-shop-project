@@ -60,14 +60,16 @@
                     <img src="">
                   </a>
                   <div class="product-action">
-                    <a href="#" th:onclick="addToCart([[${p.productId}]], [[${p.name}]], [[${p.price}]])">
-                      <i class="fa fa-cart-plus"></i></a>
+<!--                    <a href="#" th:onclick="addToCart([[${p.productId}]], [[${p.name}]], [[${p.price}]])">-->
+<!--                      <i class="fa fa-cart-plus"></i></a>-->
                     <a href="#"><i class="fa fa-heart"></i></a>
-                    <a href="product-detail.html"><i class="fa fa-search"></i></a>
+                    <a th:href="@{/products/{productId}(productId=${p.productId})}"><i class="fa fa-search"></i></a>
                   </div>
                 </div>
                 <div class="product-price">
-                  <h3 th:text="${p.price}" id="price"><span>$</span></h3>
+                  <h3 th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(p.price), '.00', '')),'$','')}"
+                      id="price"><span>$</span></h3>
+
                   <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
                 </div>
               </div>

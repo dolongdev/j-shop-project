@@ -41,7 +41,7 @@
                             <a href="#" class="dropdown-item">Phụ kiện nữ</a>
                         </div>
                     </div>
-                    <a href="my-account.html" class="nav-item nav-link">Kiểm tra đơn hàng</a>
+                    <a th:href="@{/accounts/orders}" class="nav-item nav-link">Kiểm tra đơn hàng</a>
                     <a th:href="@{/contact}" class="nav-item nav-link">Liên Hệ</a>
                 </div>
                 <div class="navbar-nav ml-auto">
@@ -59,7 +59,7 @@
                                 [[${#request.remoteUser}]]</a>
                             <div class="dropdown-menu">
                                 <a th:href="@{/security/login}" class="dropdown-item">Tài khoản </a>
-                                <a th:href="@{/}" class="dropdown-item">Đơn hàng</a>
+                                <a th:href="@{/accounts/orders}" class="dropdown-item">Đơn hàng</a>
                                 <a th:href="@{/security/logoff}" class="dropdown-item">Đăng xuất</a>
                             </div>
                         </th:block>

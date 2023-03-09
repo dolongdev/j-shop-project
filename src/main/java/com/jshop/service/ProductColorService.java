@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ProductColorService {
 
-
+    ProductColorDto findById(int id);
     List<ProductColorDto> findAll();
 }

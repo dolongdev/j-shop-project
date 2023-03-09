@@ -30,7 +30,8 @@
                                         <div class="title"><h2 th:text="${item.name}"></h2></div>
                                         <div class="price">
                                             <h4>Giá:</h4>
-                                            <p th:text="${item.price}"> <span>$149</span></p>
+                                            <p th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(item.price), '.00', '')),'$','')}">
+                                                <span>$149</span></p>
                                         </div>
                                         <div class="quantity">
                                             <h4>Số lượng:</h4>
@@ -40,26 +41,26 @@
                                                 <button class="btn-plus"><i class="fa fa-plus"></i></button>
                                             </div>
                                         </div>
-                                        <div class="p-size">
+                                        <div class="p-size" th:if="${sizes != null}">
                                             <h4>Size:</h4>
                                             <div class="btn-group btn-group-sm">
                                                 <th:block th:each="s : ${sizes}">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio"
-                                                               name="sizeOption" th:value="${s}">
-                                                        <label class="form-check-label">[[${s}]]</label>
+                                                               name="sizeOption" th:value="${s.id}">
+                                                        <label class="form-check-label">[[${s.name}]]</label>
                                                     </div>
                                                 </th:block>
                                             </div>
                                         </div>
-                                        <div class="p-color">
+                                        <div class="p-color" th:if="${colors != null}">
                                             <h4>Màu:</h4>
                                             <div class="btn-group btn-group-sm">
                                                 <th:block th:each="c : ${colors}">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio"
-                                                               name="colorOption" th:value="${c}">
-                                                        <label class="form-check-label">[[${c}]]</label>
+                                                               name="colorOption" th:value="${c.id}">
+                                                        <label class="form-check-label">[[${c.name}]]</label>
                                                     </div>
                                                 </th:block>
                                             </div>

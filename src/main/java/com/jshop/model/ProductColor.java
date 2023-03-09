@@ -27,4 +27,8 @@ public class ProductColor {
     @JsonIgnore
     @OneToMany
     List<ColorSize> colorSizes;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productColor")
+    List<OrderDetail> orderDetails;
 }

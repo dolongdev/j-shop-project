@@ -4,9 +4,7 @@ import com.jshop.dto.AccountDto;
 import com.jshop.dto.Cart;
 import com.jshop.dto.OrderDetailDto;
 import com.jshop.dto.OrderDto;
-import com.jshop.model.Account;
-import com.jshop.model.Order;
-import com.jshop.model.OrderDetail;
+import com.jshop.model.*;
 import com.jshop.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +36,17 @@ public class CartController {
     ProductService productService;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    ColorSizeService colorSizeService;
+    @Autowired
+    ProductColorService productColorService;
 
     @GetMapping("/cart")
     public String cart(Model model, Principal principal, HttpSession session){
         if (principal == null){
             model.addAttribute("error"
                     , "Vui lòng đăng nhập để xử dụng giỏ hàng!");
-            return "redirect:/security/login";
+            return "/home/login";
 
         }
 
@@ -70,7 +72,7 @@ public class CartController {
         if (principal == null){
             model.addAttribute("message"
                     , "Vui lòng đăng nhập để sử dụng chức năng này!");
-            return "redirect:/security/login";
+            return "/home/login";
         }
         Map<Integer, Cart> cartMap = (Map<Integer, Cart>) session.getAttribute("carts");
         AccountDto account = accountService.findByUsername(principal.getName());
@@ -102,8 +104,10 @@ public class CartController {
                 OrderDetailDto orderDetail = new OrderDetailDto();
                 orderDetail.setQuantity(c.getQuantity());
                 orderDetail.setOrder(newOrder);
-                orderDetail.setSize(c.getSize());
-                orderDetail.setColor(c.getColor());
+                orderDetail
+                        .setColorSize(this.modelMapper.map(colorSizeService.findById(c.getColor_size_id()), ColorSize.class));
+                orderDetail
+                        .setProductColor(this.modelMapper.map(productColorService.findById(c.getProduct_color_id()), ProductColor.class));
                 orderDetail.setProduct(productService.findById(c.getProductId()));
                 OrderDetailDto newOrderDetail = this.orderDetailService.create(orderDetail);
             }

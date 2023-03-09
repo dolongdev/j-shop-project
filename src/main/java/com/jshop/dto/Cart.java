@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Cart {
     private int productId;
-    private String product_name;
+    private String productName;
     private float price;
     private int quantity;
-    private String color;
-    private String size;
+    private int product_color_id;
+    private int color_size_id;
     private float total;
 
     public double getTotal() {

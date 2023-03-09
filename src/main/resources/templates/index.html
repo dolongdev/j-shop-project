@@ -7,17 +7,17 @@
 <body>
     Thông tin sản phẩm
     <ul>
-        <li th:text="${item.name}"></li>
-        <li th:text="${item.detail}"></li>
-        <li th:text="${item.description}"></li>
+<!--        <li th:text="${item.name}"></li>-->
+<!--        <li th:text="${item.detail}"></li>-->
+<!--        <li th:text="${item.description}"></li>-->
         <li>
             <th:block th:each="s : ${sizes}">
-                <input type="checkbox" th:value="${s}">[[${s}]]
+                <input type="checkbox" th:value="${s.id}">[[${s.name}]]
             </th:block>
         </li>
         <li>
             <th:block th:each="c : ${colors}">
-                <input type="checkbox" th:value="${c}">[[${c}]]
+                <input type="checkbox" th:value="${c.id}">[[${c.name}]]
             </th:block>
         </li>
     </ul>

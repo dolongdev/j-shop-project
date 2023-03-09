@@ -19,6 +19,12 @@ public class ProductColorServiceImpl implements ProductColorService {
     ModelMapper modelMapper;
 
     @Override
+    public ProductColorDto findById(int id) {
+        ProductColor item = this.productColorRepo.getOne(id);
+        return this.modelMapper.map(item, ProductColorDto.class);
+    }
+
+    @Override
     public List<ProductColorDto> findAll() {
         List<ProductColor> productColors = this.productColorRepo.findAll();
 

@@ -2,6 +2,7 @@ package com.jshop.controller;
 
 import com.jshop.config.AppConstants;
 import com.jshop.dto.CategoryDto;
+import com.jshop.dto.IdName;
 import com.jshop.dto.ProductDto;
 import com.jshop.model.Product;
 import com.jshop.service.CategoryService;
@@ -53,10 +54,18 @@ public class ProductController {
     public String productDetail(@PathVariable int productId, Model model){
         ProductDto item = this.productService.findById(productId);
         model.addAttribute("item", item);
-        List<String> colors = this.productService.getColors(productId);
-        List<String> sizes = this.productService.getSizes(productId);
-        model.addAttribute("colors", colors);
-        model.addAttribute("sizes", sizes);
+        List<IdName> colors = this.productService.getColors(productId);
+        List<IdName> sizes = this.productService.getSizes(productId);
+        if (colors.get(0).getName().equals("Không")){
+            model.addAttribute("colors", null);
+        }else {
+            model.addAttribute("colors", colors);
+        }
+        if (sizes.get(0).getName().equals("Khong")){
+            model.addAttribute("sizes", null);
+        }else{
+            model.addAttribute("sizes", sizes);
+        }
 
         List<ProductDto> proByCate = this.productService.findAllByCategory(item.getCategory());
         model.addAttribute("proByCate", proByCate);

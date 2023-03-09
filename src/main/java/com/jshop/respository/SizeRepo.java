@@ -9,5 +9,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SizeRepo extends JpaRepository<Size, Integer> {
-
+    Size findByNameContaining(String name);
 }

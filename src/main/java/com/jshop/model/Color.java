@@ -17,6 +17,6 @@ public class Color {
     private boolean active;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(mappedBy = "color")
     List<ProductColor> productColors;
 }

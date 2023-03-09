@@ -40,12 +40,7 @@
                                     <tbody class="align-middle">
                                         <th:block th:each="c : ${carts}">
                                             <tr th:id="product+${c.productId}">
-                                                <td>
-                                                    <div class="img">
-                                                        <a href="#"><img src="img/product-1.jpg" alt="Image"></a>
-                                                        <p th:text="${c.product_name}"></p>
-                                                    </div>
-                                                </td>
+                                                <td th:text="${c.productName}"></td>
                                                 <td th:text="${c.price}"></td>
                                                 <td>
                                                     <div class="qty">
@@ -55,7 +50,7 @@
                                                         <button class="btn-plus"><i class="fa fa-plus"></i></button>
                                                     </div>
                                                 </td>
-                                                <td>[[${c.size}]], [[${c.color}]]</td>
+                                                <td>[[${c.color_size_id}]], [[${c.product_color_id}]]</td>
                                                 <td th:text="${c.total}"></td>
                                                 <td><button th:onclick="deleteCart([[${c.productId}]])"><i class="fa fa-trash"></i></button></td>
                                             </tr>

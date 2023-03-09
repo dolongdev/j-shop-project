@@ -252,8 +252,8 @@ function addToCart(productId, productName, price){
                 "productName" : productName,
                 "price" : price,
                 "quantity" : 1,
-                "color" : selectedColor,
-                "size" : selectedSize
+                "product_color_id" : selectedColor,
+                "color_size_id" : selectedSize
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -263,6 +263,28 @@ function addToCart(productId, productName, price){
         }).then(function(data){
             let counter = document.getElementById("cartCounter");
             counter.innerText = data;
+        })
+        console.log(`Selected size: ${selectedSize}, selected color: ${selectedColor}`);
+    }else{
+        fetch("/api/cart", {
+            method : 'post',
+            body : JSON.stringify({
+                "productId" : productId,
+                "productName" : productName,
+                "price" : price,
+                "quantity" : 1,
+                "product_color_id" : null,
+                "color_size_id" : null
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            return res.json();
+        }).then(function(data){
+            let counter = document.getElementById("cartCounter");
+            counter.innerText = data;
+            console.log(productName);
         })
         console.log(`Selected size: ${selectedSize}, selected color: ${selectedColor}`);
     }

@@ -12,12 +12,18 @@ public class OrderDetail {
     @Column(name = "order_detail_id")
     private int id;
     private int quantity;
-    private String color;
-    private String size;
 
     @ManyToOne
     @JoinColumn(name = "productId")
     Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "productColorId")
+    ProductColor productColor;
+
+    @ManyToOne
+    @JoinColumn(name = "colorSizeId")
+    ColorSize colorSize;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

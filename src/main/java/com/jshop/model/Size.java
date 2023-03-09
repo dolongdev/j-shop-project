@@ -17,6 +17,6 @@ public class Size {
     private boolean active;
 
     @JsonIgnore
-    @OneToMany
-    List<Size> sizes;
+    @OneToMany(mappedBy = "size")
+    List<ColorSize> colorSizes;
 }

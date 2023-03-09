@@ -36,8 +36,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         OrderDetail orderDetail = this.orderDetailRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order Detail", "ID", id));
         orderDetail.setQuantity(item.getQuantity());
-        orderDetail.setColor(item.getColor());
-        orderDetail.setSize(item.getSize());
+//        orderDetail.setColor(item.getColor());
+//        orderDetail.setSize(item.getSize());
         this.orderDetailRepo.save(orderDetail);
         return this.modelMapper.map(orderDetail, OrderDetailDto.class);
     }

@@ -1,6 +1,7 @@
 package com.jshop.service.impl;
 
 import com.jshop.dto.CategoryDto;
+import com.jshop.dto.IdName;
 import com.jshop.dto.ProductDto;
 import com.jshop.exceptions.ResourceNotFoundException;
 import com.jshop.model.Category;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -109,15 +111,32 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<String> getSizes(int id) {
-        List<String> sizes = this.productRepo.get_sizes_by_id(id);
-        return sizes;
+    public List<IdName> getSizes(int id) {
+        List<Object[]> sizes = this.productRepo.get_sizes_by_id(id);
+        List<IdName> idNames = new ArrayList<>();
+        for (Object[] size : sizes) {
+            IdName idName = new IdName(size[0].toString(), size[1].toString());
+            idNames.add(idName);
+        }
+        return idNames;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<String> getColors(int id) {
-        List<String> colors = this.productRepo.get_colors_by_id(id);
-        return colors;
+    public List<IdName> getColors(int id) {
+        List<Object[]> colors = this.productRepo.get_colors_by_id(id);
+        List<IdName> idNames = new ArrayList<>();
+        for (Object[] color : colors) {
+            IdName idName = new IdName(color[0].toString(), color[1].toString());
+            idNames.add(idName);
+        }
+        return idNames;
     }
+
+    @Override
+    public int getQuantity(int productId, String color, String size) {
+
+        return 0;
+    }
+
 }

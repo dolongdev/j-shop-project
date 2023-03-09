@@ -1,5 +1,6 @@
 package com.jshop.respository;
 
+import com.jshop.dto.IdName;
 import com.jshop.model.Category;
 import com.jshop.model.Product;
 import org.springframework.data.domain.Page;
@@ -19,9 +20,9 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     Page<Product> findByNameContaining(String tittle, Pageable pageable);
 
     @Procedure(name = "get_colors_by_id")
-    List<String> get_colors_by_id(@Param("id") int id);
+    List<Object[]> get_colors_by_id(@Param("id") int id);
 
     @Procedure(name = "get_sizes_by_id")
-    List<String> get_sizes_by_id(@Param("id") int id);
+    List<Object[]> get_sizes_by_id(@Param("id") int id);
 
 }

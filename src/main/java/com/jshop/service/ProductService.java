@@ -1,6 +1,7 @@
 package com.jshop.service;
 
 import com.jshop.dto.CategoryDto;
+import com.jshop.dto.IdName;
 import com.jshop.dto.ProductDto;
 import com.jshop.model.Category;
 import com.jshop.model.Product;
@@ -24,7 +25,9 @@ public interface ProductService {
 
     List<ProductDto> searchProc(String keyword, int pageNumber, int pageSize, String sortBy, String sortDir);
 
-    List<String> getSizes(int id);
+    List<IdName> getSizes(int id);
 
-    List<String> getColors(int id);
+    List<IdName> getColors(int id);
+
+    int getQuantity(int productId, String color, String size);
 }

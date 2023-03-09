@@ -1,7 +1,11 @@
 package com.jshop.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -19,4 +23,8 @@ public class ColorSize {
     @ManyToOne
     @JoinColumn(name = "productColorId")
     ProductColor productColor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "colorSize")
+    List<OrderDetail> orderDetails;
 }

@@ -44,7 +44,7 @@
                                             <td th:text="${od.order_id}"></td>
                                             <td th:text="${od.address}"></td>
                                             <td th:text="${od.createDate}"></td>
-                                            <td th:text="${od.amount}"></td>
+                                            <td th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(od.amount), '.00', '')),'$','')}"></td>
                                             <td th:if="${od.status}">Đang giao hàng</td>
                                             <td th:unless="${od.status}">Chờ xác nhận</td>
                                             <td><a th:href="@{/orderDetails/{orderId}(orderId=${od.order_id})}"
