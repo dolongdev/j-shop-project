@@ -16,5 +16,7 @@ public interface AccountService {
 
     void delete(String username);
 
+    Boolean checkUsername(String username);
+
     List<AccountDto> findAll();
 }

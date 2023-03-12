@@ -8,10 +8,9 @@ import com.jshop.service.ColorSizeService;
 import com.jshop.service.ProductColorService;
 import com.jshop.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/colorSizes")
@@ -28,5 +27,14 @@ public class ApiColorSizeController {
             , @ModelAttribute(name = "sizeId") int sizeId){
         ColorSizeDto colorSizeDto = this.colorSizeService.findByProductColorAndSize(productColorId, sizeId);
         return colorSizeDto;
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ColorSizeDto> update(){
+        ColorSizeDto colorSizeDto = this.colorSizeService.findById(41);
+        colorSizeDto.setQuantity(colorSizeDto.getQuantity() - 1);
+        ColorSizeDto item = this.colorSizeService.update(41, colorSizeDto);
+
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
 }

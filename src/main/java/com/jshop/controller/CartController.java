@@ -1,9 +1,6 @@
 package com.jshop.controller;
 
-import com.jshop.dto.AccountDto;
-import com.jshop.dto.Cart;
-import com.jshop.dto.OrderDetailDto;
-import com.jshop.dto.OrderDto;
+import com.jshop.dto.*;
 import com.jshop.model.*;
 import com.jshop.service.*;
 import org.modelmapper.ModelMapper;
@@ -40,6 +37,20 @@ public class CartController {
     ColorSizeService colorSizeService;
     @Autowired
     ProductColorService productColorService;
+    @Autowired
+    FavoriteService favoriteService;
+    @Autowired
+    DiscountService discountService;
+
+    @ModelAttribute
+    public void commonAttrs(Model model , HttpSession session, Principal principal){
+        model.addAttribute("cartCounter",
+                cartService.countCart((Map<Integer, Cart>) session.getAttribute("carts")));
+        if (principal != null){
+            int count = this.favoriteService.countByUsername(principal.getName());
+            model.addAttribute("countFavorite", count);
+        }
+    }
 
     @GetMapping("/cart")
     public String cart(Model model, Principal principal, HttpSession session){
@@ -83,32 +94,52 @@ public class CartController {
 
     @PostMapping("/checkout")
     public String addReceipt(HttpSession session, Principal principal, Model model
-            , @RequestParam("address") String address){
+            , @RequestParam("address") String address
+            , @RequestParam(value = "code", required = false) String code){
         if (principal == null){
             model.addAttribute("message"
                     , "Vui lòng đăng nhập để xử dụng giỏ hàng!");
             return "redirect:/security/login";
         }
-
         Map<Integer, Cart> cartMap = (Map<Integer, Cart>) session.getAttribute("carts");
         if (cartMap != null){
             AccountDto account = this.accountService.findByUsername(principal.getName());
             OrderDto order = new OrderDto();
             order.setAddress(address);
             order.setAccount(this.modelMapper.map(account, Account.class));
-            order.setAmount(cartService.getAmount(cartMap));
             order.setCreateDate(new Date());
+            if (code != null){
+                DiscountDto discountDto = this.discountService.checkCode(code);
+                if (discountDto != null){
+                    float amountCart = cartService.getAmount(cartMap);
+                    order.setAmount(amountCart - (amountCart * discountDto.getDiscount()));
+                    order.setDiscount(this.modelMapper.map(discountDto, Discount.class));
+                    this.discountService.usedCode(code);
+                }else {
+                    model.addAttribute("errorDiscount"
+                            , "Mã sai hoặc đã hết hiệu lực");
+                    return "/home/checkout";
+                }
+            }
+
+
             OrderDto newOrder = this.orderService.create(order);
 
             for (Cart c : cartMap.values()){
                 OrderDetailDto orderDetail = new OrderDetailDto();
                 orderDetail.setQuantity(c.getQuantity());
                 orderDetail.setOrder(newOrder);
+                ProductColorDto productColorDto = this
+                        .productColorService.findByProductAndColor(c.getProductId(), c.getProduct_color_id());
+                ColorSizeDto colorSizeDto = this.colorSizeService
+                        .findByProductColorAndSize(productColorDto.getProductColorId(), c.getColor_size_id());
                 orderDetail
-                        .setColorSize(this.modelMapper.map(colorSizeService.findById(c.getColor_size_id()), ColorSize.class));
+                        .setColorSize(this.modelMapper.map(colorSizeDto, ColorSize.class));
                 orderDetail
-                        .setProductColor(this.modelMapper.map(productColorService.findById(c.getProduct_color_id()), ProductColor.class));
+                        .setProductColor(this.modelMapper.map(productColorDto, ProductColor.class));
                 orderDetail.setProduct(productService.findById(c.getProductId()));
+                colorSizeDto.setQuantity(colorSizeDto.getQuantity() - 1);
+                this.colorSizeService.update(colorSizeDto.getColorSizeId(), colorSizeDto);
                 OrderDetailDto newOrderDetail = this.orderDetailService.create(orderDetail);
             }
         }

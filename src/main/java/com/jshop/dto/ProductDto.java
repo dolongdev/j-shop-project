@@ -21,6 +21,6 @@ public class ProductDto {
     private float price;
     private String image;
 
-    Account account;
+    AccountDto account;
     CategoryDto category;
 }

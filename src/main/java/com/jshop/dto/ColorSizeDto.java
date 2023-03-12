@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class ColorSizeDto {
     private int colorSizeId;
     private int quantity;
-    Size size;
+    SizeDto size;
     ProductColorDto productColorDto;
 }

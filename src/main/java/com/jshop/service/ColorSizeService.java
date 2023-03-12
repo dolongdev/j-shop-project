@@ -8,6 +8,8 @@ import com.jshop.model.ProductColor;
 public interface ColorSizeService {
     ColorSizeDto findById(int id);
 
+    ColorSizeDto update(int id, ColorSizeDto colorSizeDto);
+
     ColorSizeDto findByIdAndProductColor(int id, ProductColor productColor);
 
     ColorSizeDto findByProductColorAndSize(int productColorId, int sizeId);

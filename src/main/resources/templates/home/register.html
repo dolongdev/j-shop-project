@@ -12,7 +12,7 @@
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/home}">Home</a></li>
                     <li class="breadcrumb-item active">Đăng kí</li>
                 </ul>
             </div>
@@ -25,41 +25,90 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div class="register-form">
+                            <form th:action="@{/security/register}" method="post" th:object="${account}">
+                            <label id="error" style="color: red" hidden></label>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Họ tên</label>
-                                    <input class="form-control" type="text" placeholder="Họ tên">
+                                    <label>Họ</label>
+                                    <input class="form-control" th:field="*{lastName}" required
+                                           type="text" placeholder="Last Name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Tên</label>
+                                    <input class="form-control" th:field="*{firstName}" required
+                                           type="text" placeholder="First Name">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Tên đăng nhập</label>
-                                    <input class="form-control" type="text" placeholder="Tên đăng nhập">
+                                    <input class="form-control" th:field="*{username}" required
+                                           type="text" placeholder="Username" id="username">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Ngày tạo</label>
+                                    <input class="form-control" th:value="${date}" required readonly
+                                           type="text">
                                 </div>
                                 <div class="col-md-6">
                                     <label>E-mail</label>
-                                    <input class="form-control" type="text" placeholder="E-mail">
+                                    <input class="form-control" th:field="*{email}" required
+                                           type="email" placeholder="E-mail">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Số điện thoại</label>
-                                    <input class="form-control" type="text" placeholder="Số điện thoại">
+                                    <input class="form-control" th:field="*{phone}" required
+                                           type="text" placeholder="Phone Number">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Mật khẩu</label>
-                                    <input class="form-control" type="text" placeholder="Mật khẩu">
+                                    <input class="form-control" th:field="*{password}" required
+                                           id="password" type="password" placeholder="Password">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Nhập lại mật khẩu</label>
-                                    <input class="form-control" type="text" placeholder="Nhập lại mật khẩu">
+                                    <input class="form-control" id="rePassword" required
+                                           type="password" placeholder="Replace Password">
                                 </div>
                                 <div class="col-md-12">
-                                    <button class="btn">Đăng kí</button>
+                                    <button class="btn" id="btn" type="submit" disabled>Đăng kí</button>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Register End -->
+        <script th:inline="javascript">
+            const inputUsername = document.getElementById('username');
+            const error = document.getElementById('error');
+            const btn = document.getElementById('btn');
+            const password = document.getElementById('password');
+            const rePassword = document.getElementById('rePassword');
+            inputUsername.onblur = function () {
+                fetch(`/api/accounts/check/${inputUsername.value}`, {
+                    method: 'get'
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    if (data){
+                        error.removeAttribute('hidden');
+                        error.innerText = "Tài khoản đã tồn tại!";
+                    }else {
+                        error.setAttribute('hidden', '');
+                    }
+                })
+            }
+            rePassword.onblur = function () {
+                if (password.value != rePassword.value){
+                    error.removeAttribute('hidden');
+                    error.innerText = "Nhập lại mật khẩu không đúng!";
+                }else {
+                    error.setAttribute('hidden', '');
+                    btn.removeAttribute('disabled');
+                }
+            }
+        </script>
     </div>
 </body>
 </html>

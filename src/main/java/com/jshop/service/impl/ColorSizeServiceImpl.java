@@ -34,6 +34,15 @@ public class ColorSizeServiceImpl implements ColorSizeService {
     }
 
     @Override
+    public ColorSizeDto update(int id, ColorSizeDto colorSizeDto) {
+        ColorSize item = this.colorSizeRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Color Size", "ID", id));
+        item.setQuantity(colorSizeDto.getQuantity());
+        this.colorSizeRepo.save(item);
+        return modelMapper.map(item, ColorSizeDto.class);
+    }
+
+    @Override
     public ColorSizeDto findByIdAndProductColor(int id, ProductColor productColor) {
         ColorSize colorSize = this.colorSizeRepo.findByColorSizeIdAndProductColor(id, productColor);
         return this.modelMapper.map(colorSize, ColorSizeDto.class);

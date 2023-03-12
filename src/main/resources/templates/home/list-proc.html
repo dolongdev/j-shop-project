@@ -10,7 +10,26 @@
     <div layout:fragment="content">
       <div th:replace="/home/fragments/bread-crumb"></div>
       <div th:replace="/home/fragments/list-proc"></div>
-        <script th:src="@{/webjars/format-number@2.0.1/dist/format-number.min.js}"></script>
+      <script th:inline="javascript">
+          function addFavorite(procId, username) {
+              event.preventDefault();
+              const formData = new FormData();
+              formData.append('procId', procId);
+              formData.append('username', username);
+              fetch('/api/favorites/save', {
+                  method: 'post',
+                  body: formData
+              }).then(function(res){
+                  return res.json();
+              }).then(function(data){
+                  // xử lý dữ liệu ở đây
+                  const favoriteCounter = document.getElementById('favoriteCounter');
+                  const count = parseInt(favoriteCounter.textContent);
+                  const result = count + 1;
+                  favoriteCounter.innerText = result.toString();
+              });
+          }
+      </script>
 
     </div>
 </body>

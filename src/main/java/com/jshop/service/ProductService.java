@@ -1,5 +1,6 @@
 package com.jshop.service;
 
+import com.jshop.dto.CS;
 import com.jshop.dto.CategoryDto;
 import com.jshop.dto.IdName;
 import com.jshop.dto.ProductDto;
@@ -14,6 +15,8 @@ public interface ProductService {
     ProductDto update(int productId, ProductDto item);
 
     void delete(int productId);
+
+    void sell(int procId, int colorId, int sizeId);
 
     ProductDto findById(int productId);
 
@@ -31,6 +34,10 @@ public interface ProductService {
     List<IdName> getSizes(int id);
 
     List<IdName> getColors(int id);
+
+    List<CS> getSizesAndColors(int id);
+
+    List<ProductDto> top10sold();
 
     int getQuantity(int productId, String color, String size);
 }

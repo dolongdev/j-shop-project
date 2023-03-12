@@ -24,6 +24,10 @@ public class Order {
     @JoinColumn(name = "username")
     private Account account;
 
+    @ManyToOne
+    @JoinColumn(name = "discountId")
+    private Discount discount;
+
     @JsonIgnore
     @OneToMany(mappedBy = "order")
     List<OrderDetail> orderDetails;

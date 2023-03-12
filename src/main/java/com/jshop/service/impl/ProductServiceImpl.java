@@ -1,14 +1,11 @@
 package com.jshop.service.impl;
 
-import com.jshop.dto.CategoryDto;
-import com.jshop.dto.IdName;
-import com.jshop.dto.ProductDto;
+import com.jshop.dto.*;
 import com.jshop.exceptions.ResourceNotFoundException;
 import com.jshop.model.Category;
 import com.jshop.model.Product;
 import com.jshop.respository.ProductRepo;
-import com.jshop.service.CategoryService;
-import com.jshop.service.ProductService;
+import com.jshop.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +26,15 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    ColorService colorService;
+
+    @Autowired
+    SizeService sizeService;
+    @Autowired
+    ProductColorService productColorService;
+    @Autowired
+    ColorSizeService colorSizeService;
     @Autowired
     CategoryService categoryService;
 
@@ -53,6 +59,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(int productId) {
         this.productRepo.deleteById(productId);
+    }
+
+    @Override
+    public void sell(int procId, int colorId, int sizeId) {
+        ProductColorDto productColorDto = this.productColorService
+                .findByProductAndColor(procId, colorId);
+        ColorSizeDto colorSizeDto = this.colorSizeService
+                .findByProductColorAndSize(productColorDto.getProductColorId(), sizeId);
+        colorSizeDto.setQuantity(colorSizeDto.getQuantity() - 1);
+        this.colorSizeService.update(colorSizeDto.getColorSizeId(), colorSizeDto);
     }
 
     @Override
@@ -155,6 +171,36 @@ public class ProductServiceImpl implements ProductService {
             idNames.add(idName);
         }
         return idNames;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CS> getSizesAndColors(int id) {
+        List<CS> csList = new ArrayList<>();
+
+        List<Object[]> result = productRepo.get_cs_product(id);
+        for (Object[] record : result) {
+            ColorDto color = this.colorService.findById((int) record[3]);
+            ProductDto product = this.findById((int) record[4]);
+            SizeDto size = this.sizeService.findById((int) record[7]);
+            ProductColorDto pcDto = new ProductColorDto((Integer) record[0]
+                    , (String) record[1], (Boolean) record[2], color, product);
+            ColorSizeDto csDto = new ColorSizeDto(
+                    (Integer) record[5], (Integer) record[6], size, pcDto);
+            CS cs = new CS(pcDto, csDto);
+            csList.add(cs);
+        }
+        return csList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductDto> top10sold() {
+        List<Product> products = this.productRepo.top10sold();
+
+        List<ProductDto> list = products.stream()
+                .map((product) -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return list;
     }
 
     @Override

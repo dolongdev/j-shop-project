@@ -27,4 +27,9 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     @Procedure(name = "get_sizes_by_id")
     List<Object[]> get_sizes_by_id(@Param("id") int id);
 
+    @Procedure(name = "get_cs_product")
+    List<Object[]> get_cs_product(@Param("id") int id);
+
+    @Procedure(name = "top10sold")
+    List<Product> top10sold();
 }

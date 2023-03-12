@@ -54,6 +54,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Boolean checkUsername(String username) {
+        try {
+            AccountDto accountDto = this.findByUsername(username);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
     public List<AccountDto> findAll() {
         List<Account> accounts = this.accountRepo.findAll();
 

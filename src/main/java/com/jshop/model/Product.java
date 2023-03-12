@@ -35,4 +35,7 @@ public class Product {
     @OneToMany
     List<ProductColor> productColors;
 
+    @JsonIgnore
+    @OneToMany
+    List<Favorite> favorites;
 }

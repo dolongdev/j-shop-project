@@ -53,7 +53,7 @@
 
                                     <div class="col-md-12">
                                         <label>Địa chỉ</label>
-                                        <input class="form-control" type="text" name="address"
+                                        <input class="form-control" type="text" name="address" required
                                                placeholder="Số nhà, phường, quận, thành phố,..">
                                     </div>
                                     <div class="col-md-12">
@@ -61,12 +61,52 @@
                                         <input class="form-control" type="text" placeholder="Ghi chú">
                                     </div>
                                     <div class="col-md-12">
+                                        <label>Mã giảm giá</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" name="code" id="discountCode">
+                                            <button class="btn btn-outline-secondary" th:onclick="checkCode()"
+                                                    type="button">Nhập mã</button>
+                                        </div>
+                                        <div class="form-text" th:if="${errorDiscount}" th:text="${errorDiscount}"></div>
+                                        <div class="form-text" id="errorDiscount" hidden></div>
+                                    </div>
+                                    <div class="col-md-12">
                                             <button class="btn btn-cart" type="submit"
                                                     th:onclick="pay()">Đặt hàng</button>
                                     </div>
-
                                 </div>
                                 </form>
+                                <script th:inline="javascript">
+                                    function checkCode() {
+                                        const input = document.getElementById('discountCode');
+                                        const discountVal = document.getElementById('discountVal');
+                                        const errorDiscount = document.getElementById('errorDiscount');
+                                        const am = document.getElementById('am');
+                                        let code = input.value;
+                                        let amount = document.getElementById('amount').textContent;
+                                        fetch(`/api/discounts/checkCode/${code}`, {
+                                            method : 'get'
+                                        }).then(function(res){
+                                            return res.json();
+                                        }).then(function(data){
+                                            if (data != 0){
+                                                errorDiscount.setAttribute('hidden', '');
+                                                let data2 = parseFloat(data);
+                                                console.log(amount + ' ' + data2);
+                                                let dc = amount * data2;
+                                                let dc2 = amount - dc;
+                                                console.log(dc + ' ' + dc2)
+                                                discountVal.innerText = dc;
+                                                am.innerText = dc2;
+                                            }else {
+                                                errorDiscount.textContent = 'Mã sai hoặc hết hiệu lực! '
+                                                    + errorDiscount.textContent;
+                                                errorDiscount.removeAttribute('hidden');
+                                                console.log('Ma Sai!!');
+                                            }
+                                        })
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -74,9 +114,10 @@
                         <div class="checkout-inner">
                             <div class="checkout-summary">
                                 <h1>Tổng tiền giỏ hàng</h1>
-                                <p class="sub-total">Tạm tính<span th:text="${amount}"></span></p>
-                                <p class="ship-cost">Phí vận chuyển<span>$1</span></p>
-                                <h2>Tổng cộng<span th:text="${amount}"></span></h2>
+                                <p class="sub-total">Tạm tính<span th:text="${amount}" id="amount"></span></p>
+                                <p class="ship-cost">Giảm giá<span id="discountVal"></span></p>
+                                <p class="ship-cost">Phí vận chuyển<span>$0</span></p>
+                                <h2>Tổng cộng<span th:text="${amount}" id="am"></span></h2>
                             </div>
 
                             <div class="checkout-payment">

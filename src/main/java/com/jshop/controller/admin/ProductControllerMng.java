@@ -58,7 +58,13 @@ public class ProductControllerMng {
         model.addAttribute("currentUser", account);
         if (choose.equals("update")){
             ProductDto product = this.productService.findById(Integer.valueOf(productId));
+            List<CS> csList = this.productService.getSizesAndColors(Integer.valueOf(productId));
+            model.addAttribute("csList", csList);
+//            List<IdName> sizes = this.productService.getSizes(Integer.valueOf(productId));
+//            List<IdName> colors = this.productService.getColors(Integer.valueOf(productId));
             model.addAttribute("product", product);
+//            model.addAttribute("sizesById", sizes);
+//            model.addAttribute("colorsById", colors);
         }else if (choose.equals("add")){
             ProductDto product = new ProductDto();
             model.addAttribute("product", product);
@@ -69,8 +75,16 @@ public class ProductControllerMng {
 
     @PostMapping("/addOrEdit")
     public String addOrEditPost(Model model , Principal principal
-            , @ModelAttribute(name = "choose") String choose){
-
+            , @ModelAttribute(name = "choose") String choose
+            , @ModelAttribute(name = "product") ProductDto product
+            , @ModelAttribute(name = "productId", binding = false) String productId){
+        if (choose.equals("add")){
+            ProductDto item = this.productService.create(product);
+            model.addAttribute("product", item);
+        }else if (choose.equals("update")){
+            ProductDto item = this.productService.update(Integer.valueOf(productId), product);
+            model.addAttribute("product", item);
+        }
         return null;
     }
 

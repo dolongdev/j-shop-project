@@ -1,6 +1,6 @@
 (function ($) {
     "use strict";
-    
+
     // Dropdown on mouse hover
     $(document).ready(function () {
         function toggleNavbarMethod() {
@@ -14,11 +14,12 @@
                 $('.navbar .dropdown').off('mouseover').off('mouseout');
             }
         }
+
         toggleNavbarMethod();
         $(window).resize(toggleNavbarMethod);
     });
-    
-    
+
+
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
@@ -31,8 +32,8 @@
         $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
         return false;
     });
-    
-    
+
+
     // Header slider
     $('.header-slider').slick({
         autoplay: true,
@@ -41,8 +42,8 @@
         slidesToShow: 1,
         slidesToScroll: 1
     });
-    
-    
+
+
     // Product Slider 4 Column
     $('.product-slider-4').slick({
         autoplay: true,
@@ -77,8 +78,8 @@
             },
         ]
     });
-    
-    
+
+
     // Product Slider 3 Column
     $('.product-slider-3').slick({
         autoplay: true,
@@ -107,8 +108,8 @@
             },
         ]
     });
-    
-    
+
+
     // Product Detail Slider
     $('.product-slider-single').slick({
         infinite: true,
@@ -127,8 +128,8 @@
         focusOnSelect: true,
         asNavFor: '.product-slider-single'
     });
-    
-    
+
+
     // Brand Slider
     $('.brand-slider').slick({
         speed: 5000,
@@ -170,8 +171,8 @@
             }
         ]
     });
-    
-    
+
+
     // Review slider
     $('.review-slider').slick({
         autoplay: true,
@@ -188,8 +189,8 @@
             }
         ]
     });
-    
-    
+
+
     // Widget slider
     $('.sidebar-slider').slick({
         autoplay: true,
@@ -198,8 +199,8 @@
         slidesToShow: 1,
         slidesToScroll: 1
     });
-    
-    
+
+
     // Quantity
     $('.qty button').on('click', function () {
         var $button = $(this);
@@ -215,18 +216,18 @@
         }
         $button.parent().find('input').val(newVal);
     });
-    
-    
+
+
     // Shipping address show hide
     $('.checkout #shipto').change(function () {
-        if($(this).is(':checked')) {
+        if ($(this).is(':checked')) {
             $('.checkout .shipping-address').slideDown();
         } else {
             $('.checkout .shipping-address').slideUp();
         }
     });
-    
-    
+
+
     // Payment methods show hide
     $('.checkout .payment-method .custom-control-input').change(function () {
         if ($(this).prop('checked')) {
@@ -238,86 +239,70 @@
 })(jQuery);
 
 //cart
-function addToCart(productId, productName, price){
+function addToCart(productId, productName, price) {
     event.preventDefault();
+    let sizeId;
+    let colorId;
     const selectedSizeInput = document.querySelector('input[name="sizeOption"]:checked');
     const selectedColorInput = document.querySelector('input[name="colorOption"]:checked');
-    if (selectedSizeInput !== null && selectedColorInput !== null) {
-        const selectedSize = selectedSizeInput.value;
-        const selectedColor = selectedColorInput.value;
-        fetch("/api/cart", {
-            method : 'post',
-            body : JSON.stringify({
-                "productId" : productId,
-                "productName" : productName,
-                "price" : price,
-                "quantity" : 1,
-                "product_color_id" : selectedColor,
-                "color_size_id" : selectedSize
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(function(res){
-            return res.json();
-        }).then(function(data){
-            let counter = document.getElementById("cartCounter");
-            counter.innerText = data;
-        })
-        console.log(`Selected size: ${selectedSize}, selected color: ${selectedColor}`);
-    }else{
-        fetch("/api/cart", {
-            method : 'post',
-            body : JSON.stringify({
-                "productId" : productId,
-                "productName" : productName,
-                "price" : price,
-                "quantity" : 1,
-                "product_color_id" : null,
-                "color_size_id" : null
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(function(res){
-            return res.json();
-        }).then(function(data){
-            let counter = document.getElementById("cartCounter");
-            counter.innerText = data;
-            console.log(productName);
-        })
-        console.log(`Selected size: ${selectedSize}, selected color: ${selectedColor}`);
+    if (selectedSizeInput != null) {
+        sizeId = selectedSizeInput.value;
+    } else {
+        sizeId = 5;
     }
-
-
-}
-
-function updateCart(obj, productId){
+    if (selectedColorInput != null) {
+        colorId = selectedColorInput.value;
+    } else {
+        colorId = 1;
+    }
     fetch("/api/cart", {
-        method : 'put',
-        body : JSON.stringify({
-            "productId" : productId,
-            "productName" : "",
-            "price" : 0,
-            "quantity" : obj.value
+        method: 'post',
+        body: JSON.stringify({
+            "productId": productId,
+            "productName": productName,
+            "price": price,
+            "quantity": 1,
+            "product_color_id": colorId,
+            "color_size_id": sizeId
         }),
         headers: {
             "Content-Type": "application/json"
         }
-    }).then(function(res){
+    }).then(function (res) {
         return res.json();
-    }).then(function(data){
+    }).then(function (data) {
+        let counter = document.getElementById("cartCounter");
+        counter.innerText = data;
+    })
+    console.log(`Selected size: ${sizeId}, selected color: ${colorId}`);
+}
+
+function updateCart(obj, productId) {
+    fetch("/api/cart", {
+        method: 'put',
+        body: JSON.stringify({
+            "productId": productId,
+            "productName": "",
+            "price": 0,
+            "quantity": obj.value
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
         let counter = document.getElementById("cartCounter");
         counter.innerText = data;
     })
 }
 
-function deleteCart(productId){
+function deleteCart(productId) {
     fetch(`/api/cart/${productId}`, {
-        method : 'delete'
-    }).then(function(res){
+        method: 'delete'
+    }).then(function (res) {
         return res.json();
-    }).then(function(data){
+    }).then(function (data) {
         let counter = document.getElementById("cartCounter");
         counter.innerText = data;
         // location.reload();
@@ -326,26 +311,30 @@ function deleteCart(productId){
     })
 }
 
-function reloadPage(){
+function reloadPage() {
     location.reload();
 }
 
 function checkout() {
     fetch('/checkout', {
-        method : 'get'
-    }).then(function(res){
+        method: 'get'
+    }).then(function (res) {
         return res.json();
-    }).then(function(data){
+    }).then(function (data) {
     })
 }
 
 function pay() {
     fetch('/checkout', {
-        method : 'post'
-    }).then(function(res){
+        method: 'post'
+    }).then(function (res) {
         return res.json();
-    }).then(function(code){
+    }).then(function (code) {
         console.info(code)
     })
 }
+
+
+
+
 

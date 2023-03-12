@@ -32,6 +32,19 @@
     <div th:replace="/home/fragments/footer"></div>
     <div th:replace="/home/fragments/footer-bottom"></div>
 
+    <script>
+        const currentUrl = window.location.pathname;
+
+        const navbarItems = document.querySelectorAll('.navbar-nav .nav-link');
+        navbarItems.forEach(item => {
+            if (item.getAttribute('href') === currentUrl) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    </script>
+
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

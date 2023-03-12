@@ -26,11 +26,16 @@
                     <div class="col-lg-6">
                         <div class="login-form">
                             <form th:action="@{/security/login}" method="post">
-                            <div class="row" th:if="${message}">
+                            <div class="row" th:if="${param.error}">
                                 <div class="col-md">
-                                    <label style="color: red">[[${message}]]</label>
+                                    <label style="color: red" th:text="${session.errorMessage}"></label>
                                 </div>
                             </div>
+                                <div class="row" th:if="${error}">
+                                    <div class="col-md">
+                                        <label style="color: red" th:text="${error}"></label>
+                                    </div>
+                                </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Email/ Tài khoản</label>

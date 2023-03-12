@@ -1,6 +1,7 @@
 package com.jshop.dto;
 
 import com.jshop.model.Account;
+import com.jshop.model.Discount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,5 @@ public class OrderDto {
     private boolean status;
     private float amount;
     private Account account;
+    private Discount discount;
 }

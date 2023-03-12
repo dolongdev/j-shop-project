@@ -21,9 +21,12 @@
             </div>
             <div class="col-md-3">
                 <div class="account">
-                    <a href="wishlist.html" class="btn wishlist">
+                    <a th:href="@{/favorites}" class="btn wishlist">
                         <i class="fa fa-heart"></i>
-                        <span>(0)</span>
+                        <span id="favoriteCounter"
+                              th:if="${#request.remoteUser}" th:text="${countFavorite}"></span>
+                        <span id="favoriteCounter"
+                              th:unless="${#request.remoteUser}">0</span>
                     </a>
                     <a th:href="@{/cart}" class="btn cart">
                         <i class="fa fa-shopping-cart"></i>

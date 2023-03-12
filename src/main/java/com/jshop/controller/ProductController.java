@@ -1,22 +1,21 @@
 package com.jshop.controller;
 
 import com.jshop.config.AppConstants;
+import com.jshop.dto.Cart;
 import com.jshop.dto.CategoryDto;
 import com.jshop.dto.IdName;
 import com.jshop.dto.ProductDto;
 import com.jshop.model.Product;
-import com.jshop.service.CategoryService;
-import com.jshop.service.ProductService;
-import com.jshop.service.SizeService;
+import com.jshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/products")
@@ -27,23 +26,35 @@ public class ProductController {
     SizeService sizeService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    FavoriteService favoriteService;
+    @Autowired
+    CartService cartService;
+
+    @ModelAttribute
+    public void commonAttrs(Model model , HttpSession session, Principal principal){
+        model.addAttribute("cartCounter",
+                cartService.countCart((Map<Integer, Cart>) session.getAttribute("carts")));
+        if (principal != null){
+            int count = this.favoriteService.countByUsername(principal.getName());
+            model.addAttribute("countFavorite", count);
+        }
+    }
 
     @GetMapping
     public String listProc(Model model
             , @ModelAttribute(name = "pageNumber", binding = false) String pageNumber
-            , @ModelAttribute(name = "choose", binding = false) String choose){
+            , @ModelAttribute(name = "choose", binding = false) String choose
+            , @ModelAttribute(name = "categoryId", binding = false) String categoryId){
 
-//        getAllCate(model);
+        getAllCate(model);
 
         switch (choose){
-            case "lowPrice" :
-                getAll(model, pageNumber, "price", "asc");
-                break;
-            case "highPrice" :
-                getAll(model, pageNumber, "price", "desc");
-                break;
-            default:
-                getAll(model, pageNumber, "name", "asc");
+            case "lowPrice" -> getAll(model, pageNumber, "price", "asc");
+            case "highPrice" -> getAll(model, pageNumber, "price", "desc");
+            case "category" -> getAllByCategory(model
+                    , Integer.valueOf(categoryId), pageNumber, "productId", "asc");
+            default -> getAll(model, pageNumber, "productId", "asc");
         }
 
         return "/home/list-proc";
@@ -98,7 +109,7 @@ public class ProductController {
         return "/home/list-proc";
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public String listProcByName(Model model, @ModelAttribute(name = "keyword") String keyword
             , @ModelAttribute(name = "pageNumber", binding = false) String pageNumber){
         List<ProductDto> countProc = productService.findAll();
@@ -144,9 +155,29 @@ public class ProductController {
         model.addAttribute("products", list);
     }
 
-//    private void getAllCate(Model model){
-//        List<Category> list = this.categoryService.findAll();
-//        model.addAttribute("categories", list);
-//    }
+    private void getAllByCategory(Model model, int categoryId
+            , String pageNumber, String sortBy, String sortDir){
+        List<ProductDto> countProc = productService.findAll();
+        int maxPage = (int) Math.ceil(countProc.size() / (double) AppConstants.PAGE_SIZE);
+        model.addAttribute("maxPage", maxPage);
+        List<ProductDto> list;
+        if (pageNumber.isEmpty() || Integer.valueOf(pageNumber) > maxPage){
+            list = productService.findAllByCategorySort(categoryId, 0
+                    , AppConstants.PAGE_SIZE, sortBy, sortDir);
+            model.addAttribute("currentPage", 0);
+            model.addAttribute("pageNumber", 0);
+        }else{
+            list = productService.findAllByCategorySort(categoryId, Integer.valueOf(pageNumber)
+                    , AppConstants.PAGE_SIZE, sortBy, sortDir);
+            model.addAttribute("currentPage", Integer.valueOf(pageNumber));
+        }
+        System.out.println("PageNumber: " + pageNumber + ", maxPage:" + maxPage);
+        model.addAttribute("products", list);
+    }
+
+    private void getAllCate(Model model){
+        List<CategoryDto> list = this.categoryService.findAll();
+        model.addAttribute("categories", list);
+    }
 
 }
