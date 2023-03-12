@@ -27,7 +27,9 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="product-content">
-                                        <div class="title"><h2 th:text="${item.name}"></h2></div>
+                                        <p name="idProduct" th:text="${item.productId}" hidden></p>
+                                        <div class="title"><h2 name="productName" th:text="${item.name}"></h2></div>
+                                        <div class="title" id="note"><p style="color: red">Hết hàng</p></div>
                                         <div class="price">
                                             <h4>Giá:</h4>
                                             <p th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(item.price), '.00', '')),'$','')}">
@@ -66,10 +68,10 @@
                                             </div>
                                         </div>
                                         <div class="action">
-                                            <a class="btn"
+                                            <a class="btn" href="" id="btnCart"
                                      th:onclick="addToCart([[${item.productId}]], [[${item.name}]], [[${item.price}]])">
                                                 <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</a>
-                                            <a class="btn" href="#"><i class="fa fa-shopping-bag"></i>Mua ngay</a>
+                                            <a class="btn" href="#" id="btnShopping"><i class="fa fa-shopping-bag"></i>Mua ngay</a>
                                         </div>
                                     </div>
                                 </div>
@@ -213,45 +215,83 @@
             // lấy tất cả các nút radio button trong nhóm kích thước và màu sắc
             const sizeRadios = document.getElementsByName('sizeOption');
             const colorRadios = document.getElementsByName('colorOption');
+            const productId = document.querySelector('p[name="idProduct"]').innerText;
+            const btnCart = document.getElementById('btnCart');
+            const btnShopping = document.getElementById('btnShopping');
+            const noteTag = document.getElementById('note');
+            console.log(productId);
 
             let sizeChecked = false; // biến boolean để kiểm tra xem đã chọn phần của nhóm kích thước chưa
             let colorChecked = false; // biến boolean để kiểm tra xem đã chọn phần của nhóm màu sắc chưa
 
+            // tự động chọn giá trị đầu tiên của size và color khi vào trang sản phẩm chi tiết
+            if (sizeRadios.length > 0){
+                sizeRadios[0].checked = true;
+            }
+            if (colorRadios.length > 0){
+                colorRadios[0].checked = true;
+            }
+
+            checkProductAvailability();
+
             // thêm sự kiện onchange cho tất cả các nút radio button trong nhóm kích thước
             for (let i = 0; i < sizeRadios.length; i++) {
                 sizeRadios[i].addEventListener('change', function () {
-                    // kiểm tra xem người dùng đã chọn một phần của nhóm màu sắc chưa
-                    if (!colorChecked) {
-                        // nếu chưa, bỏ chọn tất cả các nút radio button trong nhóm kích thước
-                        for (let j = 0; j < sizeRadios.length; j++) {
-                            if (sizeRadios[j] !== this) {
-                                sizeRadios[j].checked = false;
-                            }
-                        }
-                        sizeChecked = true; // đánh dấu là đã chọn phần của nhóm kích thước
-                    } else {
-                        this.checked =
-                            false; // nếu đã chọn phần của nhóm màu sắc rồi, không cho phép chọn phần của nhóm kích thước
-                    }
+                    checkProductAvailability();
                 });
             }
 
             // thêm sự kiện onchange cho tất cả các nút radio button trong nhóm màu sắc
             for (let i = 0; i < colorRadios.length; i++) {
                 colorRadios[i].addEventListener('change', function () {
-                    // kiểm tra xem người dùng đã chọn một phần của nhóm kích thước chưa
-                    if (!sizeChecked) {
-                        // nếu chưa, bỏ chọn tất cả các nút radio button trong nhóm màu sắc
-                        for (let j = 0; j < colorRadios.length; j++) {
-                            if (colorRadios[j] !== this) {
-                                colorRadios[j].checked = false;
-                            }
+                    checkProductAvailability();
+                });
+            }
+
+            // hàm xử lý sự kiện onchange cho cả hai nhóm
+            function checkProductAvailability() {
+                // Lấy giá trị của size và color đang được chọn
+                let selectedSize = 0;
+                let selectedColor = 0;
+
+                if (sizeRadios.length > 0){
+                    selectedSize = document.querySelector('input[name="sizeOption"]:checked').value;
+                }else {
+                    selectedSize = 5;
+                }
+                if (colorRadios.length > 0){
+                    selectedColor = document.querySelector('input[name="colorOption"]:checked').value;
+                }else {
+                    selectedColor = 1
+                }
+
+                console.log('product ID: '+productId+"| s: "+selectedSize+"| c: "+selectedColor)
+
+                // Gửi yêu cầu API để kiểm tra sản phẩm
+                fetch(`/api/products/checkQuantity?productId=${productId}&sizeId=${selectedSize}&colorId=${selectedColor}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Nếu sản phẩm còn hàng, giữ nguyên tên sản phẩm
+                        if (data > 0) {
+                            // productTitle.textContent = data.productName;
+                            // productTitle.textContent = data.productName + " - Còn hàng";
+                            console.log('Còn hàng')
+                            btnCart.removeAttribute("hidden");
+                            btnShopping.removeAttribute("hidden");
+                            noteTag.setAttribute("hidden", "");
+                        } else {
+                            // Nếu sản phẩm hết hàng, thêm dòng chữ hết hàng bên cạnh tên sản phẩm
+                            // productTitle.textContent = data.productName + " - Hết hàng";
+                            btnCart.setAttribute("hidden", "");
+                            btnShopping.setAttribute("hidden", "");
+                            noteTag.removeAttribute("hidden");
+                            console.log('Hết hàng')
                         }
-                        colorChecked = true; // đánh dấu là đã chọn phần của nhóm màu sắc
-                    } else {
-                        this.checked =
-                            false; // nếu đã chọn phần của nhóm kích thước rồi, không cho phép chọn phần của nhóm màu sắc
-                    }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
         </script>
     </div>
 </body>

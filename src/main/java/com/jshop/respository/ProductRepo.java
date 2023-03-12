@@ -17,6 +17,8 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 
     List<Product> findAllByCategory(Category category);
 
+    Page<Product> findAllByCategory(Category category, Pageable pageable);
+
     Page<Product> findByNameContaining(String tittle, Pageable pageable);
 
     @Procedure(name = "get_colors_by_id")

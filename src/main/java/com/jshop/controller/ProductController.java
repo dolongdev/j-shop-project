@@ -42,7 +42,6 @@ public class ProductController {
             case "highPrice" :
                 getAll(model, pageNumber, "price", "desc");
                 break;
-
             default:
                 getAll(model, pageNumber, "name", "asc");
         }

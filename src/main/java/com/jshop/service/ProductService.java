@@ -21,6 +21,9 @@ public interface ProductService {
 
     List<ProductDto> findAllByCategory(CategoryDto category);
 
+    List<ProductDto> findAllByCategorySort(int categoryId
+            , int pageNumber, int pageSize, String sortBy, String sortDir);
+
     List<ProductDto> findAllSort(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     List<ProductDto> searchProc(String keyword, int pageNumber, int pageSize, String sortBy, String sortDir);

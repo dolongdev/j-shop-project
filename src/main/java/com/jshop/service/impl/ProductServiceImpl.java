@@ -7,6 +7,7 @@ import com.jshop.exceptions.ResourceNotFoundException;
 import com.jshop.model.Category;
 import com.jshop.model.Product;
 import com.jshop.respository.ProductRepo;
+import com.jshop.service.CategoryService;
 import com.jshop.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class ProductServiceImpl implements ProductService {
     ProductRepo productRepo;
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    CategoryService categoryService;
 
     @Override
     public ProductDto create(ProductDto item) {
@@ -71,6 +75,26 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findAllByCategory(CategoryDto category) {
         List<Product> products = this.productRepo
                 .findAllByCategory(this.modelMapper.map(category, Category.class));
+
+        List<ProductDto> list = products.stream()
+                .map((product) -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return list;
+    }
+
+    @Override
+    public List<ProductDto> findAllByCategorySort(int categoryId
+            , int pageNumber, int pageSize, String sortBy, String sortDir) {
+        CategoryDto category = this.categoryService.findById(categoryId);
+
+        Sort sort = (sortDir.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending());
+
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Product> productPage = this.productRepo
+                .findAllByCategory(this.modelMapper.map(category, Category.class), p);
+
+        List<Product> products = productPage.getContent();
 
         List<ProductDto> list = products.stream()
                 .map((product) -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());

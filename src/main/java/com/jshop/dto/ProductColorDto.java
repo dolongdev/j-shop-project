@@ -13,6 +13,6 @@ public class ProductColorDto {
     private int productColorId;
     private String image;
     private boolean active;
-    Color color;
-    Product product;
+    ColorDto color;
+    ProductDto product;
 }
