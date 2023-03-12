@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- MENU SIDEBAR-->
+<aside class="menu-sidebar d-none d-lg-block">
+  <div class="logo">
+    <a href="#">
+      <img th:src="@{/admin-stt/images/icon/logoJShop.svg}" alt="Cool Admin" />
+    </a>
+  </div>
+  <div class="menu-sidebar__content js-scrollbar1">
+    <nav class="navbar-sidebar">
+      <ul class="list-unstyled navbar__list">
+        <li>
+          <a href="index copy.html">
+            <i class="fas fa-chart-bar"></i>Thống kê</a>
+        </li>
+        <li class="has-sub">
+          <a class="js-arrow" href="#">
+            <i class="fas fa-table"></i>Sản phẩm</a>
+          <ul class="list-unstyled navbar__sub-list js-sub-list">
+            <li>
+              <a th:href="@{/administration/products}">Danh sách</a>
+            </li>
+            <li>
+              <a th:href="@{/administration/products/addOrEdit}">Thêm mới</a>
+            </li>
+          </ul>
+        </li>
+        <li class="has-sub active">
+          <a class="js-arrow" href="#">
+            <i class="fas fa-desktop"></i>Tài khoản</a>
+          <ul class="list-unstyled navbar__sub-list js-sub-list">
+            <li>
+              <a th:href="@{/administration/accounts}">Danh sách</a>
+            </li>
+            <li>
+              <a th:href="@{/administration/accounts/addOrEdit}">Thêm mới</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>
+<!-- END MENU SIDEBAR-->

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout-admin}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- DATA TABLE -->
+                <h3 class="title-5 m-b-35">danh sách sản phẩm</h3>
+                <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                            <div class="rs-select2--light rs-select2--md">
+                                <select class="js-select2" id="optionCategory" onchange="navigateToPage('optionCategory')">
+                                    <option selected="selected">Loại hàng</option>
+                                    <th:block th:each="c : ${categories}">
+                                        <option th:value="'/administration/products?choose=category&categoryId=' + ${c.categoryId}">
+                                            [[${c.name}]]</option>
+                                    </th:block>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <div class="rs-select2--light rs-select2--sm">
+                                <select class="js-select2" id="optionPrice" onchange="navigateToPage('optionPrice');">
+                                    <option selected="selected">Giá</option>
+                                    <option value="/administration/products?choose=lowPrice">Thấp đến cao</option>
+                                    <option value="/administration/products?choose=highPrice">Cao đến thấp</option></select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <button class="au-btn-filter">
+                                <i class="zmdi zmdi-filter-list"></i>Lọc</button>
+                    </div>
+                    <div class="table-data__tool-right">
+                        <div class="rs-select2--dark rs-select2 rs-select2--dark2">
+                            <form class="input-group mb-3" method="post"
+                                  th:action="@{/administration/products/search}">
+                                <input type="text" name="keyword"
+                                       class="form-control" placeholder="Nhập tài tên sản phẩm..">
+                                <div class="input-group-append">
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small"
+                                            type="submit">Tìm kiếm</button>
+                                </div>
+                            </form>
+                        </div>
+                        <a th:href="@{/administration/products/addOrEdit?choose=add}"
+                           class="au-btn au-btn-icon au-btn--green au-btn--small" style="color: white;">
+                            <i class="zmdi zmdi-plus"></i>Thêm mới</a>
+                    </div>
+                </div>
+                <div class="table-responsive table-responsive-data2">
+                    <table class="table table-data2">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>ảnh</th>
+                            <th>tên sản phẩm</th>
+                            <th>loại hàng</th>
+                            <th>ngày tạo</th>
+                            <th>người tạo</th>
+                            <th>giá</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="tr-shadow" th:each="p : ${products}">
+                            <td th:text="${p.productId}"></td>
+                            <td>
+                                <img th:src="@{/home-stt/img/proc/{image}(image=${p.image})}"
+                                     style="width: 100px;"></td>
+                            <td th:text="${p.name}"></td>
+                            <td th:text="${p.category.name}"></td>
+                            <td th:text="${p.createDate}"></td>
+                            <td>
+                                <span class="status--process" th:text="${p.account.username}"></span>
+                            </td>
+                            <td th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(p.price), '.00', '')),'$','')}"></td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <a th:href="@{/administration/products/addOrEdit?choose=update&productId={productId}(productId=${p.productId})}"
+                                       class="btn item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </a>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END DATA TABLE -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center"> <br>
+                <nav aria-label="Page navigation">
+                    <th:block th:if="${choose == ''}">
+                        <ul class="pagination justify-content-center mb-3">
+                            <li class="page-item">
+                                <a class="page-link" th:href="@{/administration/products?pageNumber=0}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true"> << </span>
+                                    <span class="sr-only">First</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item disabled" th:if="${currentPage == 0 }">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true"> < </span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item " th:unless="${currentPage == 0 }">
+                                <a class="page-link" th:href="@{/administration/products(pageNumber=${currentPage-1})}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true"> < </span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item disabled" th:if="${currentPage == (maxPage - 1)}">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true"> > </span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage == (maxPage - 1)}">
+                                <a class="page-link"
+                                   th:href="@{/administration/products(pageNumber=${currentPage+1})}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true"> > </span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item">
+                                <a class="page-link"
+                                   th:href="@{/administration/products(pageNumber=${maxPage-1})}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true"> >> </span>
+                                    <span class="sr-only">Last</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </th:block>
+                    <th:block th:unless="${choose == ''}">
+                        <ul class="pagination justify-content-center mb-3">
+                            <li class="page-item">
+                                <a class="page-link" th:href="@{/administration/products?pageNumber=0}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true"> << </span>
+                                    <span class="sr-only">First</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item disabled" th:if="${currentPage == 0 }">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true"> < </span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item " th:unless="${currentPage == 0 }">
+                                <a class="page-link"
+                                   th:href="@{/administration/products(pageNumber=${currentPage-1})}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true"> < </span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item disabled" th:if="${currentPage == (maxPage - 1)}">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true"> > </span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage == (maxPage - 1)}">
+                                <a class="page-link"
+                                   th:href="@{/administration/products(pageNumber=${currentPage+1}, choose=${choose})}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true"> > </span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item">
+                                <a class="page-link"
+                                   th:href="@{/administration/products(pageNumber=${maxPage-1})}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true"> >> </span>
+                                    <span class="sr-only">Last</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </th:block>
+                </nav>
+            </div>
+        </div>
+</body>
+</html>

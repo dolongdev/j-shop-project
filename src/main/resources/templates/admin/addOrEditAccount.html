@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout-admin}">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm mới tài khoản</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="title-5 m-b-35">thêm mới tài khoản</h3>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <label class="form-label">Thêm ảnh cho tài khoản</label>
+                    </div>
+                    <div class="card-body card-block mx-auto" enctype="multipart/form-data">
+                        <input type="file" class="form-control" id="file-input"/>
+                        <img id="img-preview" th:src="@{#}"
+                             class="img-fluid rounded shadow-sm mx-auto d-block">
+                    </div>
+                    <script th:inline="javascript">
+                        const input = document.getElementById('file-input');
+                        const image = document.getElementById('img-preview');
+
+                        input.addEventListener('change', (e) => {
+                            if (e.target.files.length) {
+                                const src = URL.createObjectURL(e.target.files[0]);
+                                image.src = src;
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="card">
+                    <div class="card-body card-block">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Vai trò</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Admin</option>
+                                <option>Khách hàng</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        Thông tin tài khoản
+                    </div>
+                    <div class="card-body card-block">
+                        <form action="" method="post" class="form-horizontal">
+                            <!-- <div class="row form-group">
+                                <div class="col-12 col-md-9">
+                                    <span class="help-block" style="color: red;">Lỗi</span>
+                                </div>
+                            </div> -->
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label">Họ</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" name="name" required
+                                           placeholder="Enter First Name..." class="form-control">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label">Tên</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" name="name" required
+                                           placeholder="Enter Last Name..." class="form-control">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label">Email</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="email" name="name" required
+                                           placeholder="Enter Email..." class="form-control">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label">Số điện thoại</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text"
+                                           placeholder="Username" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label">Mật khẩu</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="password" name="name"
+                                           placeholder="Enter Password..." class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-dot-circle-o"></i> Thêm
+                        </button>
+                        <button type="reset" class="btn btn-danger btn-sm">
+                            <i class="fa fa-ban"></i> Reset
+                        </button>
+                        <a type="reset" class="btn btn-danger btn-sm" style="color: aliceblue;">
+                            <i class="fa fa-backward"></i> Trở về
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

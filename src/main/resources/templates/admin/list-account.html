@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/layout-admin}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- DATA TABLE -->
+                <h3 class="title-5 m-b-35">Danh sách tài khoản</h3>
+                <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                        <div class="rs-select2--light rs-select2--sm">
+                            <select class="js-select2" name="property">
+                                <option selected="selected">Vai trò</option>
+                                <option value="cus">Khách hàng</option>
+                                <option value="ad">Admin</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                        <div class="rs-select2--light rs-select2--sm">
+                            <select class="js-select2" name="time">
+                                <option selected="selected">Ngày tạo</option>
+                                <option value="">Mới nhất</option>
+                                <option value="">Cũ nhất</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                        <button class="au-btn-filter">
+                            <i class="zmdi zmdi-filter-list"></i>Lọc</button>
+                    </div>
+                    <div class="table-data__tool-right">
+                        <div class="rs-select2--dark rs-select2 rs-select2--dark2">
+                            <form class="input-group mb-3" th:action="@{/}"
+                                  method="post">
+                                <input type="text" name="keyword"
+                                       class="form-control" placeholder="Nhập tài khoản muốn tìm">
+                                <div class="input-group-append">
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small"
+                                            type="submit">Tìm kiếm</button>
+                                </div>
+                            </form>
+                        </div>
+                        <a th:href="@{/}"
+                           class="au-btn au-btn-icon au-btn--green au-btn--small" style="color: white;">
+                            <i class="zmdi zmdi-plus"></i>Thêm mới</a>
+                    </div>
+                </div>
+                <div class="table-responsive table-responsive-data2">
+                    <table class="table table-data2">
+                        <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>email</th>
+                            <th>username</th>
+                            <th>ngày tạo</th>
+                            <th>vai trò</th>
+                            <th>số điện thoại</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+<!--                        <th:block th:each="item : ${accounts}">-->
+                            <tr class="tr-shadow">
+                                <td>Hoàng Long</td>
+                                <td>
+                                    <span class="block-email">longdth@gmail.com</span>
+                                </td>
+                                <td class="desc">longdth</td>
+                                <td>11-03-2023</td>
+                                <td>
+                                    <span class="status--process">Khách hàng</span>
+                                </td>
+                                <td>0954386942</td>
+                                <td>
+                                    <div class="table-data-feature">
+                                        <a th:href="@{/}"
+                                           class="item" data-toggle="tooltip" data-placement="top"
+                                           title="Edit"><i class="zmdi zmdi-edit"></i>
+                                        </a>
+                                        <button class="item" data-toggle="tooltip"
+                                                data-placement="top" title="Delete">
+                                            <i class="zmdi zmdi-delete"></i>
+                                        </button>
+                                        <button class="item" data-toggle="tooltip"
+                                                data-placement="top" title="More">
+                                            <i class="zmdi zmdi-more"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="spacer"></tr>
+<!--                        </th:block>-->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END DATA TABLE -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center"> <br>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-3">
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/}"
+                               aria-label="Previous">
+                                <span aria-hidden="true"> << </span>
+                                <span class="sr-only">First</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true"> < </span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true"> > </span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link"
+                               th:href="@{/}"
+                               aria-label="Next">
+                                <span aria-hidden="true"> >> </span>
+                                <span class="sr-only">Last</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+</body>
+</html>
