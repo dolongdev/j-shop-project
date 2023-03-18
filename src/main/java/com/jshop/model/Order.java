@@ -17,7 +17,7 @@ public class Order {
     private int order_id;
     private String address;
     private Date createDate;
-    private boolean status;
+    private int status;
     private float amount;
 
     @ManyToOne

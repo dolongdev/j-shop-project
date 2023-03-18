@@ -15,5 +15,7 @@ public interface OrderService {
 
     List<OrderDto> findAll();
 
+    List<OrderDto> findAllSort(int pageNumber, int pageSize, String sortBy, String sortDir);
+
     List<OrderDto> findAllByUsername(String username);
 }

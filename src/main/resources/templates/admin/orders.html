@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <!-- Title Page-->
+    <title>OE Poly</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/admin-stt/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/font-awesome-4.7/css/font-awesome.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/font-awesome-5/css/fontawesome-all.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/mdi-font/css/material-design-iconic-font.min.css}"
+          rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/admin-stt/vendor/bootstrap-4.1/bootstrap.min.css}"
+          rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/admin-stt/vendor/animsition/animsition.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/admin-stt/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+<body class="animsition">
+<div class="page-wrapper">
+    <div th:replace="/admin/fragments/side-bar"></div>
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <div th:replace="/admin/fragments/header"></div>
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div>
+                        <div class="row">
+                            <div class="col-lg">
+                                <!-- USER DATA-->
+                                <div class="user-data m-b-30">
+                                    <h3 class="title-3 m-b-30">
+                                        <i class="zmdi zmdi-account-calendar"></i>Quản lí đơn hàng</h3>
+                                    <div class="filters m-b-45">
+                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
+                                            <select class="js-select2" name="property">
+                                                <option selected="selected">Trạng thái</option>
+                                                <option value="">Chờ xác nhận</option>
+                                                <option value="">Đang giao hàng</option>
+                                                <option value="">Đã giao hàng</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                            <select class="js-select2 au-select-dark" name="time">
+                                                <option selected="selected">Thời gian</option>
+                                                <option value="">Mới nhất</option>
+                                                <option value="">Cũ nhất</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive table-data">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <td>id</td>
+                                                <td>tên</td>
+                                                <td>ngày tạo</td>
+                                                <td>giảm giá</td>
+                                                <td>tổng tiền</td>
+                                                <td>trạng thái</td>
+                                                <td></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <th:block th:each="o : ${orders}">
+                                                <tr th:id="orderInfor + ${o.order_id}">
+                                                    <td th:text="${o.order_id}"></td>
+                                                    <td>
+                                                        <div class="table-data__info">
+                                                            <h6 th:text="${o.account.username}"></h6>
+                                                            <span>
+                                                                <a href="#" th:text="${o.account.email}"></a>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td th:text="${o.createDate}"></td>
+                                                    <td th:if="${o.discount}" th:text="${o.discount.discount}"></td>
+                                                    <td th:unless="${o.discount}">0</td>
+                                                    <td th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(o.amount), '.00', '')),'$','')}"></td>
+                                                    <td>
+                                                        <div class="rs-select2--trans rs-select2--md">
+                                                            <select class="js-select2" name="status">
+                                                                <option th:if="${o.status == 0}" value="0"
+                                                                        selected="selected"> Chờ xác nhận</option>
+                                                                <option th:unless="${o.status == 0}">
+                                                                    Chờ xác nhận</option>
+                                                                <option th:if="${o.status == 1}" value="1"
+                                                                        selected="selected">Đang giao hàng</option>
+                                                                <option th:unless="${o.status == 1}" value="1">
+                                                                    Đang giao hàng</option>
+                                                                <option th:if="${o.status == 2}" value="2"
+                                                                        selected="selected">Đã giao hàng</option>
+                                                                <option th:unless="${o.status == 2}" value="2">
+                                                                    Đã giao hàng</option>
+                                                            </select>
+                                                            <div class="dropDownSelect2"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="more" th:onclick="getDetailOrder([[${o.order_id}]])">
+                                                            <i class="zmdi zmdi-more" data-toggle="modal"
+                                                               data-target="#staticModal"></i>
+                                                        </span>
+                                                        <span class="more" th:onclick="showOrderDetail([[${o.order_id}]])">
+                                                            <i class="zmdi zmdi-comment-list" data-toggle="modal"
+                                                               data-target="#oddModal"></i>
+                                                        </span>
+                                                        <span class="more" th:onclick="sendDeleteOrder([[${o.order_id}]])">
+                                                            <i class="zmdi zmdi-delete" data-toggle="modal"
+                                                               data-target="#notificationModal"></i>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="user-data__footer">
+                                        <button class="au-btn au-btn-load">load more</button>
+                                    </div>
+                                </div>
+                                <!-- END USER DATA-->
+                            </div>
+                        </div>
+                    </div>
+                    <div th:replace="/admin/fragments/footer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal static -->
+        <div class="modal fade" id="staticModal" tabindex="-1" role="dialog"
+             aria-labelledby="staticModalLabel" aria-hidden="true"
+             data-backdrop="static">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticModalLabel">Thông tin hóa đơn
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post" novalidate="novalidate">
+                            <div class="form-group">
+                                <label for="username" class="control-label mb-1">Mã đơn hàng</label>
+                                <input id="orderId" name="orderId" type="text"
+                                       class="form-control" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="username" class="control-label mb-1">Người đặt</label>
+                                <input id="username" name="username" type="text"
+                                       class="form-control" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="createDate" class="control-label mb-1">Ngày đặt hàng</label>
+                                <input id="createDate" name="createDate" type="text"
+                                       class="form-control" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="control-label mb-1">Địa chỉ giao hàng</label>
+                                <input id="address" name="address" type="text"
+                                       class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="discount" class="control-label mb-1">Giảm giá</label>
+                                <input id="discount" name="discount" type="text"
+                                       class="form-control" required readonly>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="amount" class="control-label mb-1">Tổng tiền</label>
+                                        <input id="amount" name="amount" type="text"
+                                               class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="status2" class="control-label mb-1">Trạng thái</label>
+                                        <select name="select" id="status2" class="form-control">
+                                            <option name="statusOption" value="0">Chờ xác nhận</option>
+                                            <option name="statusOption" value="1" selected>Đang giao hàng</option>
+                                            <option name="statusOption" value="2">Đã giao hàng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Cancel</button>
+                        <button type="button" th:onclick="updateOrder()"
+                                class="btn btn-primary">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal static -->
+        <!-- modal notification -->
+        <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog"
+             aria-labelledby="notificationModal" aria-hidden="true"
+             data-backdrop="notificationModal">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notificationModalLabel">Thông báo!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Bạn có chắc muốn xóa hóa đơn này?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="deleteBtn" class="btn btn-primary">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal notification -->
+        <!-- modal order detail list -->
+        <div class="modal fade" id="oddModal" tabindex="-1" role="dialog"
+             aria-labelledby="oddModal" aria-hidden="true"
+             data-backdrop="oddModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="oddModalLabel">Hóa đơn chi tiết
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive table-data">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>id</td>
+                                    <td>image</td>
+                                    <td>name</td>
+                                    <td>Màu, Kích thước</td>
+                                    <td>Số lượng</td>
+                                    <td></td>
+                                </tr>
+                                </thead>
+                                <tbody id="order-detail-list-body">
+<!--                                <tr>-->
+<!--                                    <td>1</td>-->
+<!--                                    <td>-->
+<!--                                        <img class="img-thumbnail" src="./images/bg-title-01.jpg" style="width: 130px;">-->
+<!--                                    </td>-->
+<!--                                    <td>Name Product</td>-->
+<!--                                    <td>Red, S</td>-->
+<!--                                    <td>2</td>-->
+<!--                                    <td>-->
+<!--                                            <span class="more">-->
+<!--                                                <i class="zmdi zmdi-delete"></i>-->
+<!--                                            </span>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Cancel</button>
+                        <button type="button"
+                                class="btn btn-primary">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal order detail list -->
+</div>
+
+<script th:inline="javascript">
+    function getDetailOrder(id) {
+        let modal = document.getElementById('staticModal');
+        fetch('/api/orders/' + id)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('username').value = data.account.username;
+                document.getElementById('createDate').value = data.createDate;
+                document.getElementById('address').value = data.address;
+                document.getElementById('orderId').value = data.order_id;
+                if (data.discount != null){
+                    document.getElementById('discount').value = data.discount.discount;
+                }else {
+                    document.getElementById('discount').value = 0;
+                }
+                document.getElementById('amount').value = data.amount;
+                const statusSelect = document.getElementById('status2');
+                const option = statusSelect.options;
+                for (let i = 0; i < option.length; i++) {
+                    if (option[i].value == data.status){
+                        option[i].setAttribute('selected', '');
+                    }else {
+                        option[i].removeAttribute('selected');
+                    }
+                }
+            });
+    }
+
+    function updateOrder() {
+        const address = document.getElementById('address').value;
+        const orderId = document.getElementById('orderId').value;
+
+        let selectedValue;
+        const select = document.getElementById("status2");
+        selectedValue = select.value;
+
+        select.addEventListener("change", () => {
+            selectedValue = select.value;
+        });
+
+        console.log(address);
+        console.log(selectedValue);
+        console.log(orderId);
+
+        fetch(`/api/orders/update/${orderId}/${address}/${selectedValue}`, {
+            method: 'get'
+        }).then(function (res) {
+            return res.json();
+        }).then(function (data) {
+            if (data != null){
+                console.log('Updated!!');
+                location.reload(true);
+            }else {
+                console.log('Fail!!');
+            }
+        })
+    }
+
+    function sendDeleteOrder(deleteOId) {
+        const deleteBtn = document.getElementById('deleteBtn');
+        deleteBtn.addEventListener("click", function(){
+            fetch(`/api/orders/delete/${deleteOId}`, {
+                method: 'delete'
+            }).then(function (res) {
+                return res.json();
+            }).then(function (data) {
+                    const orderInfor = document.getElementById('orderInfor' + deleteOId);
+                    orderInfor.setAttribute('hidden', '');
+                    location.reload(true);
+            })
+        });
+    }
+
+    function showOrderDetail(id2) {
+        fetch(`/api/orderDetails/${id2}`, {
+            method: 'get'
+        }).then(response => response.json())
+            .then(data => {
+                const productTableBody = document.getElementById('order-detail-list-body');
+
+                data.forEach(orderDetail => {
+                    const row = document.createElement('tr');
+                    const orderIdCell = document.createElement('td');
+                    orderIdCell.textContent = orderDetail.id;
+                    console.log(orderDetail.id);
+                    const imageCell = document.createElement('td');
+                    imageCell.innerHTML = '<img class="img-thumbnail" src="/home-stt/img/proc/'
+                        +orderDetail.product.image+' " style="width: 130px;">';
+                    console.log(orderDetail.product.image);
+                    const productNameCell = document.createElement('td');
+                    productNameCell.textContent = orderDetail.product.name;
+                    console.log(orderDetail.product.name);
+                    const colorSizeCell = document.createElement('td');
+                    colorSizeCell.textContent = orderDetail.productColor.color.name + ', '
+                        + orderDetail.colorSize.size.name;
+                    const quantityCell = document.createElement('td');
+                    quantityCell.textContent = orderDetail.quantity;
+                    const btnCell = document.createElement('td');
+                    btnCell.innerHTML = '<span class="more"><i class="zmdi zmdi-delete"></i></span>';
+                    row.appendChild(orderIdCell);
+                    row.appendChild(imageCell);
+                    row.appendChild(productNameCell);
+                    row.appendChild(colorSizeCell);
+                    row.appendChild(quantityCell);
+                    row.appendChild(btnCell);
+                    productTableBody.appendChild(row);
+                });
+            });
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Jquery JS-->
+<script th:src="@{/admin-stt/vendor/jquery-3.2.1.min.js}"></script>
+<!-- Bootstrap JS-->
+<script th:src="@{/admin-stt/vendor/bootstrap-4.1/popper.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+<!-- Vendor JS       -->
+<script th:src="@{/admin-stt/vendor/slick/slick.min.js}">
+</script>
+<script th:src="@{/admin-stt/vendor/wow/wow.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/animsition/animsition.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+</script>
+<script th:src="@{/admin-stt/vendor/counter-up/jquery.waypoints.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/counter-up/jquery.counterup.min.js}">
+</script>
+<script th:src="@{/admin-stt/vendor/circle-progress/circle-progress.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/admin-stt/vendor/chartjs/Chart.bundle.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/select2/select2.min.js}">
+</script>
+
+<!-- Main JS-->
+<script th:src="@{/admin-stt/js/main.js}"></script>
+</body>
+</html>
