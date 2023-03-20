@@ -106,14 +106,14 @@ public class CartController {
             AccountDto account = this.accountService.findByUsername(principal.getName());
             OrderDto order = new OrderDto();
             order.setAddress(address);
-            order.setAccount(this.modelMapper.map(account, Account.class));
+            order.setAccount(account);
             order.setCreateDate(new Date());
             if (code != null){
                 DiscountDto discountDto = this.discountService.checkCode(code);
                 if (discountDto != null){
                     float amountCart = cartService.getAmount(cartMap);
                     order.setAmount(amountCart - (amountCart * discountDto.getDiscount()));
-                    order.setDiscount(this.modelMapper.map(discountDto, Discount.class));
+                    order.setDiscount(discountDto);
                     this.discountService.usedCode(code);
                 }else {
                     model.addAttribute("errorDiscount"
@@ -134,9 +134,9 @@ public class CartController {
                 ColorSizeDto colorSizeDto = this.colorSizeService
                         .findByProductColorAndSize(productColorDto.getProductColorId(), c.getColor_size_id());
                 orderDetail
-                        .setColorSize(this.modelMapper.map(colorSizeDto, ColorSize.class));
+                        .setColorSize(colorSizeDto);
                 orderDetail
-                        .setProductColor(this.modelMapper.map(productColorDto, ProductColor.class));
+                        .setProductColor(productColorDto);
                 orderDetail.setProduct(productService.findById(c.getProductId()));
                 colorSizeDto.setQuantity(colorSizeDto.getQuantity() - 1);
                 this.colorSizeService.update(colorSizeDto.getColorSizeId(), colorSizeDto);

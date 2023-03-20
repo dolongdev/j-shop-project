@@ -14,10 +14,10 @@ import java.util.Date;
 public class FavoriteDto {
     private int favoriteId;
     private Date createDate;
-    private Product product;
-    private Account account;
+    private ProductDto product;
+    private AccountDto account;
 
-    public FavoriteDto(Date createDate, Product product, Account account) {
+    public FavoriteDto(Date createDate, ProductDto product, AccountDto account) {
         this.createDate = createDate;
         this.product = product;
         this.account = account;

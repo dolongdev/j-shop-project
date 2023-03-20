@@ -16,6 +16,6 @@ public class OrderDetailDto {
     private int quantity;
     private ProductDto product;
     private OrderDto order;
-    private ColorSize colorSize;
-    private ProductColor productColor;
+    private ColorSizeDto colorSize;
+    private ProductColorDto productColor;
 }

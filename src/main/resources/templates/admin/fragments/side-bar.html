@@ -12,12 +12,12 @@
   <div class="menu-sidebar__content js-scrollbar1">
     <nav class="navbar-sidebar">
       <ul class="list-unstyled navbar__list">
-        <li>
+        <li name="navbar-mn">
           <a href="index copy.html">
             <i class="fas fa-chart-bar"></i>Thống kê</a>
         </li>
-        <li class="has-sub">
-          <a class="js-arrow" href="#">
+        <li class="has-sub" name="navbar-mn">
+          <a class="js-arrow" th:href="@{/administration/products}">
             <i class="fas fa-table"></i>Sản phẩm</a>
           <ul class="list-unstyled navbar__sub-list js-sub-list">
             <li>
@@ -28,8 +28,8 @@
             </li>
           </ul>
         </li>
-        <li class="has-sub active">
-          <a class="js-arrow" href="#">
+        <li class="has-sub active" name="navbar-mn">
+          <a class="js-arrow" th:href="@{/administration/accounts}">
             <i class="fas fa-desktop"></i>Tài khoản</a>
           <ul class="list-unstyled navbar__sub-list js-sub-list">
             <li>
@@ -39,6 +39,10 @@
               <a th:href="@{/administration/accounts/addOrEdit}">Thêm mới</a>
             </li>
           </ul>
+        </li>
+        <li name="navbar-mn">
+          <a th:href="@{/administration/orders}" class="js-arrow">
+            <i class="fas fa-list-alt"></i>Quản lí đơn hàng</a>
         </li>
       </ul>
     </nav>

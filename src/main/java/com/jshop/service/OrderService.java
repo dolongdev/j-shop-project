@@ -18,4 +18,6 @@ public interface OrderService {
     List<OrderDto> findAllSort(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     List<OrderDto> findAllByUsername(String username);
+
+    List<OrderDto> findAllByStatus(int status, int pageNumber, int pageSize, String sortBy, String sortDir);
 }

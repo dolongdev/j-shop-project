@@ -83,4 +83,20 @@ public class OrderServiceImpl implements OrderService {
                 .map((order) -> this.modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
         return list;
     }
+
+    @Override
+    public List<OrderDto> findAllByStatus(int status
+            , int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Sort sort = (sortDir.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending());
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Order> page = this.orderRepo.findAllByStatus(status, p);
+
+        List<Order> orders = page.getContent();
+
+        List<OrderDto> list = orders.stream()
+                .map((order) -> this.modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
+        return list;
+    }
 }

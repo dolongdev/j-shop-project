@@ -20,7 +20,7 @@ public class DiscountDto {
     private int useCount;
     @NotNull
     private Boolean status;
-    private Account account;
+    private AccountDto account;
 
     public DiscountDto(String codeDiscount, float discount, int useCount, Boolean status) {
         this.codeDiscount = codeDiscount;

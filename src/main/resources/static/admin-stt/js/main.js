@@ -1676,3 +1676,8 @@ function navigateToPage(optionId) {
   const selectedOption = document.getElementById(optionId).value;
   window.location.href = selectedOption;
 }
+
+const navbar_mn = document.querySelector('.js-arrow');
+for (let i=0; i<navbar_mn.length; i++){
+  console.log(navbar_mn[i]);
+}

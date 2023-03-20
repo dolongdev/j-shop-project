@@ -56,22 +56,23 @@
                                         <i class="zmdi zmdi-account-calendar"></i>Quản lí đơn hàng</h3>
                                     <div class="filters m-b-45">
                                         <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">Trạng thái</option>
-                                                <option value="">Chờ xác nhận</option>
-                                                <option value="">Đang giao hàng</option>
-                                                <option value="">Đã giao hàng</option>
+                                            <select class="js-select2" id="statusSelectFilter">
+                                                <option selected="selected" value="null">Trạng thái</option>
+                                                <option value="0">Chờ xác nhận</option>
+                                                <option value="1">Đang giao hàng</option>
+                                                <option value="2">Đã giao hàng</option>
                                             </select>
                                             <div class="dropDownSelect2"></div>
                                         </div>
                                         <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                            <select class="js-select2 au-select-dark" name="time">
-                                                <option selected="selected">Thời gian</option>
-                                                <option value="">Mới nhất</option>
-                                                <option value="">Cũ nhất</option>
+                                            <select class="js-select2 au-select-dark" id="dateSelectFilter">
+                                                <option selected="selected" value="null">Thời gian</option>
+                                                <option value="desc">Mới nhất</option>
+                                                <option value="asc">Cũ nhất</option>
                                             </select>
                                             <div class="dropDownSelect2"></div>
                                         </div>
+                                        <button class="btn btn-secondary" id="btnFilter">filter</button>
                                     </div>
                                     <div class="table-responsive table-data">
                                         <table class="table">
@@ -139,9 +140,6 @@
                                             </th:block>
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div class="user-data__footer">
-                                        <button class="au-btn au-btn-load">load more</button>
                                     </div>
                                 </div>
                                 <!-- END USER DATA-->
@@ -298,9 +296,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Cancel</button>
-                        <button type="button"
-                                class="btn btn-primary">Confirm</button>
+                                data-dismiss="modal">Cancel</button> 
                     </div>
                 </div>
             </div>
@@ -309,6 +305,31 @@
 </div>
 
 <script th:inline="javascript">
+    const btnFilter =  document.getElementById('btnFilter');
+    const statusSelectFilter = document.getElementById('statusSelectFilter');
+    const dateSelectFilter = document.getElementById('dateSelectFilter');
+
+    btnFilter.addEventListener('click', function () {
+        console.log(statusSelectFilter.value + dateSelectFilter.value);
+        if (statusSelectFilter.value != 'null'){
+            if (dateSelectFilter.value != 'null'){
+                window.location
+                    .assign(`/administration/orders?choose=both&status=${statusSelectFilter.value}&time=${dateSelectFilter.value}`);
+            }else {
+                window.location
+                    .assign(`/administration/orders?choose=status&status=${statusSelectFilter.value}`);
+            }
+        }else {
+            if (dateSelectFilter.value == 'asc'){
+                window.location
+                    .assign(`/administration/orders?choose=old`);
+            }else {
+                window.location
+                    .assign(`/administration/orders`);
+            }
+        }
+    });
+
     function getDetailOrder(id) {
         let modal = document.getElementById('staticModal');
         fetch('/api/orders/' + id)
@@ -387,7 +408,7 @@
         }).then(response => response.json())
             .then(data => {
                 const productTableBody = document.getElementById('order-detail-list-body');
-
+                productTableBody.innerText = '';
                 data.forEach(orderDetail => {
                     const row = document.createElement('tr');
                     const orderIdCell = document.createElement('td');

@@ -11,5 +11,7 @@ public interface OrderRepo extends JpaRepository<Order, Integer> {
 
     List<Order> findAllByAccount_Username(String username);
 
+    Page<Order> findAllByStatus(int status, Pageable pageable);
+
     Page<Order> findAll(Pageable pageable);
 }

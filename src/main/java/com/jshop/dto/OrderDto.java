@@ -17,6 +17,6 @@ public class OrderDto {
     private Date createDate;
     private int status;
     private float amount;
-    private Account account;
-    private Discount discount;
+    private AccountDto account;
+    private DiscountDto discount;
 }

@@ -47,8 +47,8 @@ public class ApiFavoriteController {
             , @ModelAttribute(name = "username") String username){
         AccountDto account = this.accountService.findByUsername(username);
         ProductDto productDto = this.productService.findById(procId);
-        FavoriteDto favoriteDto = new FavoriteDto(new Date(), this.modelMapper.map(productDto, Product.class)
-                , this.modelMapper.map(account, Account.class));
+        FavoriteDto favoriteDto = new FavoriteDto(new Date(), productDto
+                , account);
         FavoriteDto item = this.favoriteService.create(favoriteDto);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
