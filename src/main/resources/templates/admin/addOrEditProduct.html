@@ -7,113 +7,96 @@
     <title>Thêm mới sản phẩm</title>
 </head>
 <body>
-    <div layout:fragment="content">
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="title-5 m-b-35">thêm mới sản phẩm</h3>
-            </div>
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <label class="form-label">Thêm ảnh cho sản phẩm</label>
-                    </div>
-                    <div class="card-body card-block mx-auto" enctype="multipart/form-data">
-                        <input type="file" class="form-control" id="file-input"/>
-                        <img id="img-preview" th:if="${choose == 'update'}"
-                             th:src="@{/home-stt/img/proc/{image}(image=${product.image})}"
-                             class="img-fluid rounded shadow-sm mx-auto d-block">
-                        <img id="img-preview" th:if="${choose == 'add'}"
-                             th:src="@{/}"
-                             class="img-fluid rounded shadow-sm mx-auto d-block">
-                    </div>
-                    <script th:inline="javascript">
-                        const input = document.getElementById('file-input');
-                        const image = document.getElementById('img-preview');
-
-                        input.addEventListener('change', (e) => {
-                            if (e.target.files.length) {
-                                const src = URL.createObjectURL(e.target.files[0]);
-                                image.src = src;
-                            }
-                        });
-                    </script>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="title-5 m-b-35">thêm mới sản phẩm</h3>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <label class="form-label">Thêm ảnh cho sản phẩm</label>
+                </div>
+                <div class="card-body card-block mx-auto" enctype="multipart/form-data">
+                    <input type="file" class="form-control" id="file-input"/>
+                    <img id="img-preview" th:if="${choose == 'update'}"
+                         th:src="@{/home-stt/img/proc/{image}(image=${product.image})}"
+                         class="img-fluid rounded shadow-sm mx-auto d-block">
+                    <img id="img-preview" th:if="${choose == 'add'}"
+                         th:src="@{/}"
+                         class="img-fluid rounded shadow-sm mx-auto d-block">
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-info" onclick="addImageToProc()">Thêm ảnh</button>
                 </div>
             </div>
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header">
-                        Thông tin sản phẩm
-                    </div>
-                    <form th:action="@{/administration/products/addOrEdit?choose={choose}(choose=${choose})}"
-                          method="post" th:object="${product}" class="form-horizontal">
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Thông tin sản phẩm
+                </div>
+                <form th:action="@{/administration/products/addOrEdit?choose={choose}(choose=${choose})}"
+                      method="post" th:object="${product}" class="form-horizontal">
                     <div class="card-body card-block">
-                            <!-- <div class="row form-group">
-                                <div class="col-12 col-md-9">
-                                    <span class="help-block" style="color: red;">Lỗi</span>
-                                </div>
-                            </div> -->
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label class=" form-control-label">Tên</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" name="name" th:field="*{name}"
-                                           placeholder="Enter Name Product..." class="form-control">
-                                </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Tên</label>
                             </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label for="select" class=" form-control-label">Loại sản phẩm</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <select name="select" id="select" class="form-control" th:field="*{category}">
-                                        <option value="0">Chọn loại sản phẩm</option>
-                                        <th:block th:each="c : ${categories}">
-                                            <option th:value="${c}">[[${c.name}]]</option>
-                                        </th:block>
-                                    </select>
-                                </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" name="name" th:field="*{name}"
+                                       placeholder="Enter Name Product..." class="form-control">
                             </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label class=" form-control-label">Ngày tạo</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input type="text" th:field="*{createDate}"
-                                           placeholder="ex: 2023-03-11..." class="form-control">
-                                </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="select" class=" form-control-label">Loại sản phẩm</label>
                             </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label class=" form-control-label">Người tạo</label>
-                                </div>
-                                <div class="col-12 col-md-9">
-                                    <input th:if="${choose == 'update'}" th:value="*{account.username}"
-                                           type="text" th:field="*{account.username}" readonly
-                                           class="form-control">
-                                    <input th:if="${choose == 'add'}"
-                                           type="text" th:field="*{account}" readonly th:value="${currentUser.username}"
-                                           th:placeholder="${currentUser.username}" class="form-control">
-                                </div>
+                            <div class="col-12 col-md-9">
+                                <select name="select" id="select" class="form-control" th:value="${category}">
+                                    <option value="0">Chọn loại sản phẩm</option>
+                                    <th:block th:each="c : ${categories}">
+                                        <option th:value="${c.categoryId}" name="categoryId">[[${c.name}]]</option>
+                                    </th:block>
+                                </select>
                             </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label class=" form-control-label">Chi tiết</label>
-                                </div>
-                                <div class="col-12 col-md-9">
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Ngày tạo</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="date"id="inputDate" th:value="${date}" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Người tạo</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input th:value="*{account}"
+                                       type="text" th:field="*{account.username}" readonly
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Chi tiết</label>
+                            </div>
+                            <div class="col-12 col-md-9">
                                     <textarea name="" th:field="*{detail}"
                                               cols="30" rows="2" class="form-control"></textarea>
-                                </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label class=" form-control-label">Miêu tả</label>
-                                </div>
-                                <div class="col-12 col-md-9">
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Miêu tả</label>
+                            </div>
+                            <div class="col-12 col-md-9">
                                     <textarea name="" th:field="*{description}"
                                               cols="30" rows="3" class="form-control"></textarea>
-                                </div>
                             </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary btn-sm">
@@ -126,101 +109,88 @@
                             <i class="fa fa-backward"></i> Trở về
                         </a>
                     </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
-        <div class="row" th:if="${choose == 'update'}">
-            <div class="col-md-12">
-                <!-- DATA TABLE -->
-                <h3 class="title-5 m-b-35">Danh sách chi tiết sản phẩm</h3>
-                <div class="table-data__tool">
-                    <div class="table-data__tool-left">
-                        <div class="rs-select2--light rs-select2--md">
-                            <select class="js-select2" name="property">
-                                <option selected="selected">Màu sắc</option>
-                                <th:block th:each="c :${colors}">
-                                    <option th:value="${c.colorId}">[[${c.name}]]</option>
-                                </th:block>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                        <div class="rs-select2--light rs-select2--sm">
-                            <select class="js-select2" name="time">
-                                <option selected="selected">Size</option>
-                                <th:block th:each="s : ${sizes}">
-                                    <option th:value="${s.sizeId}">[[${s.name}]]</option>
-                                </th:block>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                        <div class="rs-select2--light rs-select2--sm">
-                            <input type="number" placeholder="Số lượng" class="form-control">
-                        </div>
-                        <button class="au-btn-filter">
-                            <i class="zmdi zmdi-filter-list"></i>Thêm</button>
-                    </div>
-                </div>
-                <div class="table-responsive table-responsive-data2">
-                    <table class="table table-data2">
-                        <thead>
-                        <tr>
-                            <th>Màu sắc</th>
-                            <th>Size</th>
-                            <th>số lượng</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <th:block th:each="cs : ${csList}">
-                            <tr class="tr-shadow">
-                                <td th:text="${cs.productColorDto.color.name}"></td>
-                                <td th:text="${cs.colorSizeDto.size.name}"></td>
-                                <td class="desc"><input type="number"
-                                                        th:value="${cs.colorSizeDto.quantity}"></td>
-                                <td>
-                                    <div class="table-data-feature">
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Cật nhật số lượng">
-                                            <i class="zmdi zmdi-mail-send"></i>
-                                        </button>
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Xóa">
-                                            <i class="zmdi zmdi-delete"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="spacer"></tr>
-                        </th:block>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- END DATA TABLE -->
-            </div>
-
-
-<!--            <script th:inline="javascript">-->
-<!--            const colorsById = /*[[${colorsById}]]*/ [];-->
-<!--            const sizesById = /*[[${sizesById}]]*/ [];-->
-<!--            const colorCheckboxes = document.getElementsByName("colorCheckbox");-->
-<!--            const sizeCheckboxes = document.getElementsByName("sizeCheckbox");-->
-
-<!--            for (let i = 0; i < colorCheckboxes.length; i++) {-->
-<!--                const checkbox = colorCheckboxes[i];-->
-<!--                const value = checkbox.value;-->
-
-<!--                if (colorsById.some(color => color.id === value)) {-->
-<!--                    checkbox.checked = true;-->
-<!--                }-->
-<!--            }-->
-<!--            for (let i = 0; i < sizeCheckboxes.length; i++) {-->
-<!--                const checkbox = sizeCheckboxes[i];-->
-<!--                const value = checkbox.value;-->
-
-<!--                if (sizesById.some(color => color.id === value)) {-->
-<!--                    checkbox.checked = true;-->
-<!--                }-->
-<!--            }-->
-<!--        </script>-->
     </div>
+    <div class="row" th:if="${choose == 'update'}">
+        <div class="col-md-12">
+            <!-- DATA TABLE -->
+            <h3 class="title-5 m-b-35">Danh sách chi tiết sản phẩm</h3>
+            <div class="table-data__tool">
+                <div class="table-data__tool-left">
+                    <div class="rs-select2--light rs-select2--md">
+                        <select class="js-select2" name="property" id="cId">
+                            <option selected="selected" value="null">Màu sắc</option>
+                            <th:block th:each="c :${colors}">
+                                <option th:value="${c.colorId}">[[${c.name}]]</option>
+                            </th:block>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
+                    <div class="rs-select2--light rs-select2--sm">
+                        <select class="js-select2" name="time" id="sId">
+                            <option selected="selected" value="null">Size</option>
+                            <th:block th:each="s : ${sizes}">
+                                <option th:value="${s.sizeId}">[[${s.name}]]</option>
+                            </th:block>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
+                    <div class="rs-select2--light rs-select2--sm">
+                        <input type="number" placeholder="Số lượng" class="form-control" id="quantityAdd">
+                    </div>
+                    <button class="au-btn-filter" th:onclick="addPcAndCs()">
+                        <i class="zmdi zmdi-filter-list"></i>Thêm
+                    </button>
+                    <label style="color: red" id="errorMessage"></label>
+                </div>
+            </div>
+            <div class="table-responsive table-responsive-data2">
+                <table class="table table-data2">
+                    <thead>
+                    <tr>
+                        <th>Product Color ID</th>
+                        <th>Màu sắc</th>
+                        <th>Color Size ID</th>
+                        <th>Size</th>
+                        <th>số lượng</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="cs : ${csList}">
+                        <tr class="tr-shadow">
+                            <td th:text="${cs.productColorDto.productColorId}"></td>
+                            <td th:text="${cs.productColorDto.color.name}"></td>
+                            <td th:text="${cs.colorSizeDto.colorSizeId}"></td>
+                            <td th:text="${cs.colorSizeDto.size.name}"></td>
+                            <td class="desc"><input type="number" th:id="${'quantity' + cs.colorSizeDto.colorSizeId}"
+                                                    th:value="${cs.colorSizeDto.quantity}"></td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                            title="Cật nhật số lượng"
+                                            th:onclick="updateQuantityCS([[${cs.colorSizeDto.colorSizeId}]])">
+                                        <i class="zmdi zmdi-mail-send"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Xóa"
+                                            th:onclick="deletePC([[${cs.productColorDto.productColorId}]])">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+            <!-- END DATA TABLE -->
+        </div>
+
+        <script th:src="@{/admin-stt/js/addOrEditProc.js}"></script>
+    </div>
+</div>
 </body>
 </html>

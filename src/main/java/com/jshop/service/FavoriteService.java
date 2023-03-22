@@ -17,5 +17,7 @@ public interface FavoriteService {
 
     List<FavoriteDto> findAll();
 
+    List<FavoriteDto> findAllByUsername(String username);
+
     int countByUsername(String username);
 }

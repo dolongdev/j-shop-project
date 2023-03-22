@@ -5,10 +5,7 @@ import com.jshop.dto.CS;
 import com.jshop.dto.ColorSizeDto;
 import com.jshop.dto.ProductColorDto;
 import com.jshop.dto.ProductDto;
-import com.jshop.service.ColorSizeService;
-import com.jshop.service.FileService;
-import com.jshop.service.ProductColorService;
-import com.jshop.service.ProductService;
+import com.jshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -27,6 +24,10 @@ public class ApiProductController {
     ProductColorService productColorService;
     @Autowired
     ColorSizeService colorSizeService;
+    @Autowired
+    ColorService colorService;
+    @Autowired
+    SizeService sizeService;
 
     @Autowired
     FileService fileService;
@@ -78,10 +79,42 @@ public class ApiProductController {
         return new ResponseEntity<ProductDto>(item, HttpStatus.OK);
     }
 
+    @GetMapping("/check/{colorId}/{sizeId}/{pId}")
+    public boolean check(@PathVariable int colorId, @PathVariable int sizeId, @PathVariable int pId){
+        return this.productService.checkByColorAndSize(colorId, sizeId, pId);
+    }
+
+    @PostMapping("/addPcAndCs")
+    public boolean addPcAndCs(@ModelAttribute(name = "productId") String productId
+            , @ModelAttribute(name = "colorId") String colorId
+            , @ModelAttribute(name = "sizeId") String sizeId
+            , @ModelAttribute(name = "quantity") String quantity){
+        Boolean check = this.productService
+                .checkByColorAndSize(Integer.valueOf(colorId), Integer.valueOf(sizeId), Integer.valueOf(productId));
+        if (!check){
+            ProductDto productDto = this.productService.findById(Integer.valueOf(productId));
+            ProductColorDto productColorDto = new ProductColorDto();
+            productColorDto.setProduct(productDto);
+            productColorDto.setColor(this.colorService.findById(Integer.valueOf(colorId)));
+            ProductColorDto productColorDto1 = this.productColorService.create(productColorDto);
+
+            ColorSizeDto colorSizeDto = new ColorSizeDto();
+            colorSizeDto.setQuantity(Integer.valueOf(quantity));
+            colorSizeDto.setSize(this.sizeService.findById(Integer.valueOf(sizeId)));
+            colorSizeDto.setProductColorDto(productColorDto1);
+            ColorSizeDto colorSizeDto1 = this.colorSizeService.create(colorSizeDto);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     @GetMapping("/top10sold")
     public ResponseEntity<List<ProductDto>> getTop10Sold(){
         List<ProductDto> list = this.productService.top10sold();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+
 }
 

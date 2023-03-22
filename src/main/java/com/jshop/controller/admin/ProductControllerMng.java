@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -58,15 +60,20 @@ public class ProductControllerMng {
         model.addAttribute("currentUser", account);
         if (choose.equals("update")){
             ProductDto product = this.productService.findById(Integer.valueOf(productId));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = formatter.format(product.getCreateDate()); // định dạng lại ngày tháng
+            model.addAttribute("date", formattedDate);
+            model.addAttribute("product", product);
+            model.addAttribute("category", product.getCategory().getName());
             List<CS> csList = this.productService.getSizesAndColors(Integer.valueOf(productId));
             model.addAttribute("csList", csList);
-//            List<IdName> sizes = this.productService.getSizes(Integer.valueOf(productId));
-//            List<IdName> colors = this.productService.getColors(Integer.valueOf(productId));
-            model.addAttribute("product", product);
-//            model.addAttribute("sizesById", sizes);
-//            model.addAttribute("colorsById", colors);
         }else if (choose.equals("add")){
             ProductDto product = new ProductDto();
+            product.setAccount(account);
+            product.setCreateDate(new Date());
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = formatter.format(product.getCreateDate()); // định dạng lại ngày tháng
+            model.addAttribute("date", formattedDate);
             model.addAttribute("product", product);
         }
 
@@ -77,15 +84,19 @@ public class ProductControllerMng {
     public String addOrEditPost(Model model , Principal principal
             , @ModelAttribute(name = "choose") String choose
             , @ModelAttribute(name = "product") ProductDto product
-            , @ModelAttribute(name = "productId", binding = false) String productId){
+            , @ModelAttribute(name = "productId", binding = false) String productId
+            , @ModelAttribute(name = "select", binding = false) String categoryId){
         if (choose.equals("add")){
+            product.setAccount(this.accountService.findByUsername(principal.getName()));
+            product.setCreateDate(new Date());
+            product.setCategory(this.categoryService.findById(Integer.valueOf(categoryId)));
             ProductDto item = this.productService.create(product);
-            model.addAttribute("product", item);
+            return "redirect:/administration/products/addOrEdit?choose=update&productId="+item.getProductId();
         }else if (choose.equals("update")){
             ProductDto item = this.productService.update(Integer.valueOf(productId), product);
             model.addAttribute("product", item);
         }
-        return null;
+        return "/admin/addOrEditProduct";
     }
 
     @PostMapping("/search")

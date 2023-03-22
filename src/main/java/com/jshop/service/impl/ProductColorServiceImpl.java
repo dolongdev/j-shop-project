@@ -13,6 +13,7 @@ import com.jshop.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,9 +30,21 @@ public class ProductColorServiceImpl implements ProductColorService {
     ModelMapper modelMapper;
 
     @Override
+    public ProductColorDto create(ProductColorDto item) {
+        ProductColor productColor = this.productColorRepo.save(this.modelMapper.map(item, ProductColor.class));
+        return this.modelMapper.map(productColor, ProductColorDto.class);
+    }
+
+    @Override
     public ProductColorDto findById(int id) {
         ProductColor item = this.productColorRepo.getOne(id);
         return this.modelMapper.map(item, ProductColorDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void delete(int id) {
+        this.productColorRepo.deletepc(id);
     }
 
     @Override

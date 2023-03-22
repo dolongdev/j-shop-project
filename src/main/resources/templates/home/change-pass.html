@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/home/layout-home}">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Breadcrumb Start -->
+    <div class="breadcrumb-wrap">
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/home}">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Đổi mật khẩu</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Login Start -->
+    <div class="login">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="register-form">
+                        <div class="row" id="rowError" hidden>
+                            <div class="col-md">
+                                <label style="color: red" id="error-msg"></label>
+                            </div>
+                        </div>
+                        <div class="row" th:if="${error}">
+                            <div class="col-md">
+                                <label style="color: red" id="error-msg" th:text="${error}"></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <label>Nhập mật khẩu cũ</label>
+                                <input name="oldPass" id="oldPass" class="form-control"
+                                       type="password" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <label>Nhập mật khẩu mới</label>
+                                <input name="newPass" id="newPass" class="form-control"
+                                       type="password" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <label>Nhập lại mật khẩu mới</label>
+                                <input name="reNewPass" id="reNewPass" class="form-control"
+                                       type="password" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn" type="submit" id="changePassBtn"
+                                        onclick="changePass()" disabled>Đổi mật khẩu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login End -->
+    <script th:src="@{/home-stt/js/change-pass.js}"></script>
+</div>
+</body>
+</html>

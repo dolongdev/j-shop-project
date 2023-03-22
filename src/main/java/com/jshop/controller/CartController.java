@@ -146,7 +146,7 @@ public class CartController {
 
         session.removeAttribute("carts");
 
-        return "redirect:/cart";
+        return "/home/order-list";
     }
 
 

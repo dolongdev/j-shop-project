@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -39,6 +40,11 @@ public class SecurityController {
         return "/home/register";
     }
 
+    @GetMapping("/changePass")
+    public String changePassForm(){
+        return "/home/change-pass";
+    }
+
     @PostMapping("/register")
     public String registerPost(Model model
             , @ModelAttribute(name = "rePassword") String rePassword
@@ -46,6 +52,18 @@ public class SecurityController {
         account.setCreateDate(new Date());
         AccountDto item = this.accountService.create(account);
         model.addAttribute("error", "Tạo tài khoản thành công!");
+        return "/home/login";
+    }
+
+    @PostMapping("/changePass")
+    public String changPass(Model model, Principal principal
+            , @ModelAttribute(name = "oldPass") String oldPass
+            , @ModelAttribute(name = "newPass") String newPass
+            , @ModelAttribute(name = "reNewPass") String reNewPass){
+        AccountDto accountDto = this.accountService.findByUsername(principal.getName());
+        if (accountDto.getPassword().equals(oldPass)){
+
+        }
         return "/home/login";
     }
 }

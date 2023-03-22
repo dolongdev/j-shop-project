@@ -63,6 +63,16 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
+    public List<FavoriteDto> findAllByUsername(String username) {
+        List<Favorite> favorites = this.favoriteRepo.findAllByAccount_Username(username);
+
+        List<FavoriteDto> list = favorites.stream()
+                .map((favorite) -> this.modelMapper
+                        .map(favorite, FavoriteDto.class)).collect(Collectors.toList());
+        return list;
+    }
+
+    @Override
     public int countByUsername(String username) {
         int count = this.favoriteRepo.countByAccount_Username(username);
         return count;

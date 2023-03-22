@@ -32,4 +32,11 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 
     @Procedure(name = "top10sold")
     List<Product> top10sold();
+
+    @Procedure(name = "findByPcAndCs")
+    Product findByPcAndCs(@Param("pcId") int pcId, @Param("csId") int csId);
+
+    @Procedure(name = "checkByColorAndSize")
+    Product checkByColorAndSize(@Param("cId") int cId
+            , @Param("sId") int sId, @Param("pId") int pId);
 }

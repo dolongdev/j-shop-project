@@ -1677,7 +1677,29 @@ function navigateToPage(optionId) {
   window.location.href = selectedOption;
 }
 
-const navbar_mn = document.querySelector('.js-arrow');
+
+const links = document.querySelectorAll('li.has-sub a.js-arrow');
+links.forEach(function(link) {
+  link.addEventListener('click', function () {
+    event.preventDefault();
+  })
+});
+
+const navbar_mn = document.getElementsByName("navbar-mn");
+const path = window.location.pathname;
+console.log(path);
 for (let i=0; i<navbar_mn.length; i++){
-  console.log(navbar_mn[i]);
+  let check=0;
+  const aElement = navbar_mn[i].querySelectorAll('a')
+  aElement.forEach((a)=> {
+    if (a.getAttribute('href') == path){
+      check = 1;
+    }
+  });
+  if (check == 1){
+    navbar_mn[i].classList.add('active');
+  }else {
+    navbar_mn[i].classList.remove('active');
+  }
 }
+

@@ -27,10 +27,21 @@ public class ColorSizeServiceImpl implements ColorSizeService {
     ModelMapper modelMapper;
 
     @Override
+    public ColorSizeDto create(ColorSizeDto colorSizeDto) {
+        ColorSize colorSize = this.colorSizeRepo.save(this.modelMapper.map(colorSizeDto, ColorSize.class));
+        return this.modelMapper.map(colorSize, ColorSizeDto.class);
+    }
+
+    @Override
     public ColorSizeDto findById(int id) {
         ColorSize colorSize = this.colorSizeRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Color Size", "ID", id));
         return this.modelMapper.map(colorSize, ColorSizeDto.class);
+    }
+
+    @Override
+    public void delete(int id) {
+        this.colorSizeRepo.deleteById(id);
     }
 
     @Override

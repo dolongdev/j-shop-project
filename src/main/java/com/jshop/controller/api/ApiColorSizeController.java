@@ -30,10 +30,11 @@ public class ApiColorSizeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ColorSizeDto> update(){
-        ColorSizeDto colorSizeDto = this.colorSizeService.findById(41);
-        colorSizeDto.setQuantity(colorSizeDto.getQuantity() - 1);
-        ColorSizeDto item = this.colorSizeService.update(41, colorSizeDto);
+    public ResponseEntity<ColorSizeDto> update(@ModelAttribute(name = "id") String id
+            , @ModelAttribute(name = "quantity") String quantity){
+        ColorSizeDto colorSizeDto = this.colorSizeService.findById(Integer.valueOf(id));
+        colorSizeDto.setQuantity(Integer.valueOf(quantity));
+        ColorSizeDto item = this.colorSizeService.update(Integer.valueOf(id), colorSizeDto);
 
         return new ResponseEntity<>(item, HttpStatus.OK);
     }

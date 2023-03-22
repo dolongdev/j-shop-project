@@ -52,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(item.getDescription());
         product.setDetail(item.getDetail());
         product.setCategory(this.modelMapper.map(item.getCategory(), Category.class));
+        product.setImage(item.getImage());
         this.productRepo.save(product);
         return this.modelMapper.map(product, ProductDto.class);
     }
@@ -76,6 +77,28 @@ public class ProductServiceImpl implements ProductService {
         Product product = this.productRepo.findById(productId)
                 .orElseThrow(()-> new ResourceNotFoundException("Product", "Product ID", productId));
         return this.modelMapper.map(product, ProductDto.class);
+    }
+
+    @Override
+    public ProductDto findByPcAndCs(int pcId, int csId) {
+        try {
+            Product product = this.productRepo.findByPcAndCs(pcId, csId);
+            return this.modelMapper.map(product, ProductDto.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkByColorAndSize(int cID, int sId, int pId) {
+        Product product = this.productRepo.checkByColorAndSize(cID, sId, pId);
+        if (product != null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override

@@ -29,6 +29,12 @@ public class AccountServiceImpl implements AccountService {
     public AccountDto update(String username, AccountDto accountDto) {
         Account account = this.accountRepo.findById(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "Username", username));
+        account.setEmail(accountDto.getEmail());
+        account.setFirstName(accountDto.getFirstName());
+        account.setLastName(accountDto.getLastName());
+        account.setPassword(accountDto.getPassword());
+        account.setPhone(accountDto.getPhone());
+        this.accountRepo.save(account);
         return this.modelMapper.map(account, AccountDto.class);
     }
 

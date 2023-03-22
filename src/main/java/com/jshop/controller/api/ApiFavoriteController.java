@@ -36,6 +36,12 @@ public class ApiFavoriteController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @GetMapping("/findByUsername/{username}")
+    public ResponseEntity<List<FavoriteDto>> findAllByUsername(@PathVariable String username){
+        List<FavoriteDto> list = this.favoriteService.findAllByUsername(username);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @GetMapping("/{favoriteId}")
     public ResponseEntity<FavoriteDto> findById(@PathVariable int favoriteId){
         FavoriteDto item = this.favoriteService.findById(favoriteId);

@@ -20,6 +20,10 @@ public interface ProductService {
 
     ProductDto findById(int productId);
 
+    ProductDto findByPcAndCs(int pcId, int csId);
+
+    boolean checkByColorAndSize(int cId, int sId, int pId);
+
     List<ProductDto> findAll();
 
     List<ProductDto> findAllByCategory(CategoryDto category);
