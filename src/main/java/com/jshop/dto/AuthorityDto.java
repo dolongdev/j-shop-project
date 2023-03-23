@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthorityDto {
     private int authorityId;
-    private Account account;
-    private Role role;
+    private AccountDto account;
+    private RoleDto role;
 }

@@ -39,8 +39,9 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Vai trò</label>
                             <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Admin</option>
-                                <option>Khách hàng</option>
+                                <th:block th:each="r : ${roles}">
+                                    <option th:value="${r.roleId}" th:text="${r.name}"></option>
+                                </th:block>
                             </select>
                         </div>
                     </div>
@@ -52,7 +53,7 @@
                         Thông tin tài khoản
                     </div>
                     <div class="card-body card-block">
-                        <form action="" method="post" class="form-horizontal">
+                        <form action="" th:object="${account}" method="post" class="form-horizontal">
                             <!-- <div class="row form-group">
                                 <div class="col-12 col-md-9">
                                     <span class="help-block" style="color: red;">Lỗi</span>
@@ -63,7 +64,7 @@
                                     <label class=" form-control-label">Họ</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" name="name" required
+                                    <input type="text" name="name" required th:field="*{firstName}"
                                            placeholder="Enter First Name..." class="form-control">
                                 </div>
                             </div>
@@ -72,8 +73,26 @@
                                     <label class=" form-control-label">Tên</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" name="name" required
+                                    <input type="text" name="name" required th:field="*{lastName}"
                                            placeholder="Enter Last Name..." class="form-control">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label">Ngày tạo</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="createDate" required th:value="${createDate}" readonly
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label">Tên đăng nhập</label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="username" required th:field="*{username}" readonly
+                                           placeholder="Enter Username..." class="form-control">
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -81,7 +100,7 @@
                                     <label class=" form-control-label">Email</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="email" name="name" required
+                                    <input type="email" name="name" required th:field="*{email}"
                                            placeholder="Enter Email..." class="form-control">
                                 </div>
                             </div>
@@ -90,8 +109,8 @@
                                     <label class=" form-control-label">Số điện thoại</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text"
-                                           placeholder="Username" class="form-control">
+                                    <input type="text" th:field="*{phone}"
+                                           placeholder="Enter Phone Number..." class="form-control">
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -99,7 +118,7 @@
                                     <label class=" form-control-label">Mật khẩu</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="password" name="name"
+                                    <input type="password" name="name" th:field="*{password}"
                                            placeholder="Enter Password..." class="form-control">
                                 </div>
                             </div>
@@ -112,13 +131,15 @@
                         <button type="reset" class="btn btn-danger btn-sm">
                             <i class="fa fa-ban"></i> Reset
                         </button>
-                        <a type="reset" class="btn btn-danger btn-sm" style="color: aliceblue;">
+                        <a type="reset" th:href="@{/administration/accounts}"
+                           class="btn btn-danger btn-sm" style="color: aliceblue;">
                             <i class="fa fa-backward"></i> Trở về
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+        <script th:src="@{/admin-stt/js/account-mng.js}"></script>
     </div>
 </body>
 </html>

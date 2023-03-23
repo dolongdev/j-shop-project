@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
     public void delete(String username) {
         Account account = this.accountRepo.findById(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "Username", username));
-        this.accountRepo.delete(account);
+        this.accountRepo.deleteAccount(username);
     }
 
     @Override
