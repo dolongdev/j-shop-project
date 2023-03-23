@@ -1,6 +1,7 @@
 package com.jshop.service;
 
 import com.jshop.dto.FavoriteDto;
+import com.jshop.dto.ProductDto;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface FavoriteService {
     List<FavoriteDto> findAllByUsername(String username);
 
     int countByUsername(String username);
+
+    List<ProductDto> top10Favorite();
 }

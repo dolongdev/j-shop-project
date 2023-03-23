@@ -227,9 +227,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public int getQuantity(int productId, String color, String size) {
 
         return 0;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Statistical getStatistical() {
+        List<Object[]> listResult = this.productRepo.statistical();
+        Object[] result = listResult.get(0);
+        Statistical statistical = new Statistical();
+        statistical.setCountProduct(Integer.parseInt(result[0].toString()));
+        statistical.setCountNewAccount(Integer.parseInt(result[1].toString()));
+        statistical.setCountOrder((Integer.parseInt(result[2].toString())));
+        statistical.setTotalEarning(Float.parseFloat(result[3].toString()));
+
+        return statistical;
     }
 
 }

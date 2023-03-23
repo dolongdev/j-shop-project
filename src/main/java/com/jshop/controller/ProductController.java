@@ -64,6 +64,8 @@ public class ProductController {
     public String productDetail(@PathVariable int productId, Model model){
         ProductDto item = this.productService.findById(productId);
         model.addAttribute("item", item);
+        item.setViewCounts(item.getViewCounts() + 1);
+        this.productService.update(productId, item); //cap nhat luot xem
         List<IdName> colors = this.productService.getColors(productId);
         List<IdName> sizes = this.productService.getSizes(productId);
         if (colors.get(0).getName().equals("Không")){

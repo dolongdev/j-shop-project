@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+
+<section>
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-6">
+                    <!-- USER DATA-->
+                    <div class="user-data m-b-40">
+                        <h3 class="title-3 m-b-30">
+                            <i class="zmdi zmdi-account-calendar"></i>top 10 sản phẩm đã bán</h3>
+                        <div class="filters m-b-45">
+                            <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
+                                <select class="js-select2" name="property">
+                                    <option selected="selected">Loại</option>
+                                    <option value="">Áo thun</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                <select class="js-select2 au-select-dark" name="time">
+                                    <option selected="selected">Thời gian</option>
+                                    <option value="">Theo tháng</option>
+                                    <option value="">Theo ngày</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                        </div>
+                        <div class="table-responsive table-data">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>Tên</td>
+                                    <td>giá</td>
+                                    <td>loại</td>
+                                    <td></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="p :${products}">
+                                    <td th:text="${p.name}"></td>
+                                    <td th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(p.price), '.00', '')),'$','')}"></td>
+                                    <td th:text="${p.category.name}"></td>
+                                    <td>
+                                        <span class="more">
+                                            <i class="zmdi zmdi-more"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END USER DATA-->
+                </div>
+                <div class="col-xl-6">
+                    <!-- USER DATA-->
+                    <div class="user-data m-b-40">
+                        <h3 class="title-3 m-b-30">
+                            <i class="zmdi zmdi-account-calendar"></i>top 10 sản phẩm yêu thích</h3>
+                        <div class="filters m-b-45">
+                            <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
+                                <select class="js-select2" name="property">
+                                    <option selected="selected">Loại</option>
+                                    <option value="">Áo thun</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                <select class="js-select2 au-select-dark" name="time">
+                                    <option selected="selected">Thời gian</option>
+                                    <option value="">Theo tháng</option>
+                                    <option value="">Theo ngày</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                        </div>
+                        <div class="table-responsive table-data">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>Tên</td>
+                                    <td>giá</td>
+                                    <td>loại</td>
+                                    <td></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="p : ${productF}">
+                                    <td th:text="${p.name}"></td>
+                                    <td th:text="${#strings.replace((#strings.replace(#numbers.formatCurrency(p.price), '.00', '')),'$','')}"></td>
+                                    <td th:text="${p.category.name}"></td>
+                                    <td>
+                                        <span class="more">
+                                            <i class="zmdi zmdi-more"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END USER DATA-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

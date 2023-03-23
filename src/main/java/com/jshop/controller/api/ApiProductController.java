@@ -1,10 +1,7 @@
 package com.jshop.controller.api;
 
 import com.jshop.config.AppConstants;
-import com.jshop.dto.CS;
-import com.jshop.dto.ColorSizeDto;
-import com.jshop.dto.ProductColorDto;
-import com.jshop.dto.ProductDto;
+import com.jshop.dto.*;
 import com.jshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,6 +112,10 @@ public class ApiProductController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-
+    @GetMapping("/statistical")
+    public Statistical getStatistical(){
+        Statistical statistical = this.productService.getStatistical();
+        return statistical;
+    }
 }
 

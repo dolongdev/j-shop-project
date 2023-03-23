@@ -1,9 +1,6 @@
 package com.jshop.service;
 
-import com.jshop.dto.CS;
-import com.jshop.dto.CategoryDto;
-import com.jshop.dto.IdName;
-import com.jshop.dto.ProductDto;
+import com.jshop.dto.*;
 import com.jshop.model.Category;
 import com.jshop.model.Product;
 
@@ -44,4 +41,6 @@ public interface ProductService {
     List<ProductDto> top10sold();
 
     int getQuantity(int productId, String color, String size);
+
+    Statistical getStatistical();
 }

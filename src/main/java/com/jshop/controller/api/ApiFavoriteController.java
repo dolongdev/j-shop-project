@@ -78,4 +78,10 @@ public class ApiFavoriteController {
         int count = this.favoriteService.countByUsername(username);
         return count;
     }
+
+    @GetMapping("/top10Product")
+    public List<ProductDto> top10Product(){
+        List<ProductDto> list = this.favoriteService.top10Favorite();
+        return list;
+    }
 }

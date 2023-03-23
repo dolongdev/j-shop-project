@@ -1,15 +1,18 @@
 package com.jshop.service.impl;
 
 import com.jshop.dto.FavoriteDto;
+import com.jshop.dto.ProductDto;
 import com.jshop.exceptions.ResourceNotFoundException;
 import com.jshop.model.Favorite;
 import com.jshop.respository.FavoriteRepo;
 import com.jshop.service.FavoriteService;
+import com.jshop.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +20,8 @@ import java.util.stream.Collectors;
 public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     FavoriteRepo favoriteRepo;
-
+    @Autowired
+    ProductService productService;
     @Autowired
     ModelMapper modelMapper;
 
@@ -76,5 +80,17 @@ public class FavoriteServiceImpl implements FavoriteService {
     public int countByUsername(String username) {
         int count = this.favoriteRepo.countByAccount_Username(username);
         return count;
+    }
+
+    @Override
+    public List<ProductDto> top10Favorite() {
+        List<ProductDto> list = new ArrayList<>();
+        List<Object[]> top10FavoriteProduct = this.favoriteRepo.findTop10FavoriteProducts();
+        for (int i = 0; i < top10FavoriteProduct.size(); i++) {
+            ProductDto item = this.productService
+                    .findById(Integer.valueOf(top10FavoriteProduct.get(i)[0].toString()));
+            list.add(item);
+        }
+        return list;
     }
 }

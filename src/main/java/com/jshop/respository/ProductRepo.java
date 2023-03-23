@@ -1,6 +1,7 @@
 package com.jshop.respository;
 
 import com.jshop.dto.IdName;
+import com.jshop.dto.Statistical;
 import com.jshop.model.Category;
 import com.jshop.model.Product;
 import org.springframework.data.domain.Page;
@@ -39,4 +40,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     @Procedure(name = "checkByColorAndSize")
     Product checkByColorAndSize(@Param("cId") int cId
             , @Param("sId") int sId, @Param("pId") int pId);
+
+    @Procedure(name = "statistical")
+    List<Object[]> statistical();
 }
