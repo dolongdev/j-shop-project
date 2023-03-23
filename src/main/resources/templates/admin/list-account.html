@@ -1,143 +1,296 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org"
-      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/admin/layout-admin}">
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <title>Danh sách sản phẩm</title>
+    <!-- Title Page-->
+    <title>Quản lí tài khoản</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/admin-stt/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/font-awesome-4.7/css/font-awesome.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/font-awesome-5/css/fontawesome-all.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/mdi-font/css/material-design-iconic-font.min.css}"
+          rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/admin-stt/vendor/bootstrap-4.1/bootstrap.min.css}"
+          rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/admin-stt/vendor/animsition/animsition.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+          rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/admin-stt/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/admin-stt/css/theme.css}" rel="stylesheet" media="all">
+
 </head>
-<body>
-    <div layout:fragment="content">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- DATA TABLE -->
-                <h3 class="title-5 m-b-35">Danh sách tài khoản</h3>
-                <div class="table-data__tool">
-                    <div class="table-data__tool-left">
-                        <div class="rs-select2--light rs-select2--sm">
-                            <select class="js-select2" name="property">
-                                <option selected="selected">Vai trò</option>
-                                <option value="cus">Khách hàng</option>
-                                <option value="ad">Admin</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                        <div class="rs-select2--light rs-select2--sm">
-                            <select class="js-select2" name="time">
-                                <option selected="selected">Ngày tạo</option>
-                                <option value="">Mới nhất</option>
-                                <option value="">Cũ nhất</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                        <button class="au-btn-filter">
-                            <i class="zmdi zmdi-filter-list"></i>Lọc</button>
-                    </div>
-                    <div class="table-data__tool-right">
-                        <div class="rs-select2--dark rs-select2 rs-select2--dark2">
-                            <form class="input-group mb-3" th:action="@{/}"
-                                  method="post">
-                                <input type="text" name="keyword"
-                                       class="form-control" placeholder="Nhập tài khoản muốn tìm">
-                                <div class="input-group-append">
-                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small"
-                                            type="submit">Tìm kiếm</button>
-                                </div>
-                            </form>
-                        </div>
-                        <a th:href="@{/}"
-                           class="au-btn au-btn-icon au-btn--green au-btn--small" style="color: white;">
-                            <i class="zmdi zmdi-plus"></i>Thêm mới</a>
-                    </div>
-                </div>
-                <div class="table-responsive table-responsive-data2">
-                    <table class="table table-data2">
-                        <thead>
-                        <tr>
-                            <th>Tên</th>
-                            <th>email</th>
-                            <th>username</th>
-                            <th>ngày tạo</th>
-                            <th>vai trò</th>
-                            <th>số điện thoại</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-<!--                        <th:block th:each="item : ${accounts}">-->
-                            <tr class="tr-shadow">
-                                <td>Hoàng Long</td>
-                                <td>
-                                    <span class="block-email">longdth@gmail.com</span>
-                                </td>
-                                <td class="desc">longdth</td>
-                                <td>11-03-2023</td>
-                                <td>
-                                    <span class="status--process">Khách hàng</span>
-                                </td>
-                                <td>0954386942</td>
-                                <td>
-                                    <div class="table-data-feature">
-                                        <a th:href="@{/}"
-                                           class="item" data-toggle="tooltip" data-placement="top"
-                                           title="Edit"><i class="zmdi zmdi-edit"></i>
-                                        </a>
-                                        <button class="item" data-toggle="tooltip"
-                                                data-placement="top" title="Delete">
-                                            <i class="zmdi zmdi-delete"></i>
-                                        </button>
-                                        <button class="item" data-toggle="tooltip"
-                                                data-placement="top" title="More">
-                                            <i class="zmdi zmdi-more"></i>
-                                        </button>
+<body class="animsition">
+<div class="page-wrapper">
+    <div th:replace="/admin/fragments/side-bar"></div>
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <div th:replace="/admin/fragments/header"></div>
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div>
+                        <div class="row">
+                            <div class="col-lg">
+                                <!-- USER DATA-->
+                                <div class="user-data m-b-30">
+                                    <h3 class="title-3 m-b-30">
+                                        <i class="zmdi zmdi-account-calendar"></i>Quản lí tài khoản</h3>
+                                    <div class="filters m-b-45">
+                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
+                                            <select class="js-select2" id="statusSelectFilter">
+                                                <option selected="selected" value="null">Vai trò</option>
+                                                <th:block th:each="r : ${roles}">
+                                                    <option name="roleOption"
+                                                            th:value="${r.roleId}" th:text="${r.name}"></option>
+                                                </th:block>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                            <select class="js-select2 au-select-dark" id="dateSelectFilter">
+                                                <option selected="selected" value="null">Ngày tạo</option>
+                                                <option value="desc">Mới nhất</option>
+                                                <option value="asc">Cũ nhất</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        <button class="btn btn-secondary" id="btnFilter">Lọc</button>
+                                        <button class="btn btn-secondary" id="btnAdd" data-toggle="modal"
+                                                data-target="#staticModal" onclick="addNew()">Thêm Mới</button>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr class="spacer"></tr>
-<!--                        </th:block>-->
-                        </tbody>
-                    </table>
+                                    <div class="table-responsive table-data">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <td>username</td>
+                                                <td>Họ</td>
+                                                <td>Tên</td>
+                                                <td>số điện thoại</td>
+                                                <td>ngày tạo</td>
+                                                <td></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <th:block th:each="a : ${accounts}">
+                                                <tr th:id="account + ${a.username}">
+                                                    <td>
+                                                        <div class="table-data__info">
+                                                            <h6 th:text="${a.username}"></h6>
+                                                            <span>
+                                                                <a href="#" th:text="${a.email}"></a>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td th:text="${a.firstName}"></td>
+                                                    <td th:text="${a.lastName}"></td>
+                                                    <td th:text="${a.phone}"></td>
+                                                    <td th:text="${a.createDate}"></td>
+                                                    <td>
+                                                        <span class="more" th:onclick="getDetailAccount([[${a.username}]])">
+                                                            <i class="zmdi zmdi-more" data-toggle="modal"
+                                                               data-target="#staticModal"></i>
+                                                        </span>
+                                                        <span class="more" th:onclick="sendRequestDelete([[${a.username}]])">
+                                                            <i class="zmdi zmdi-delete" data-toggle="modal"
+                                                               data-target="#notificationModal"></i>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- END USER DATA-->
+                            </div>
+                        </div>
+                    </div>
+                    <div th:replace="/admin/fragments/footer"></div>
                 </div>
-                <!-- END DATA TABLE -->
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 text-center"> <br>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center mb-3">
-                        <li class="page-item">
-                            <a class="page-link" th:href="@{/}"
-                               aria-label="Previous">
-                                <span aria-hidden="true"> << </span>
-                                <span class="sr-only">First</span>
-                            </a>
-                        </li>
 
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true"> < </span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
+        <!-- modal static form add or edit account -->
+        <div class="modal fade" id="staticModal" tabindex="-1" role="dialog"
+             aria-labelledby="staticModalLabel" aria-hidden="true"
+             data-backdrop="static">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticModalLabel">Thông tin tài khoản
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true"> > </span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
+                    <div class="modal-body">
+                        <form id="formAddOrEdit" method="post"
+                              th:object="${item}" novalidate="novalidate">
+                            <div class="row">
+                                <div class="col-12" id="errorTag" hidden>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label id="errorMessage" class="control-label mb-1" style="color: red"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="firstName" class="control-label mb-1">Họ</label>
+                                            <input id="firstName" name="firstName" type="text"
+                                                   class="form-control" required th:field="*{firstName}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="lastName" class="control-label mb-1">Tên</label>
+                                            <input id="lastName" name="lastName" type="text"
+                                                   class="form-control" required th:field="*{lastName}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="username" class="control-label mb-1">Username</label>
+                                            <input id="username" name="username" type="text" th:field="*{username}"
+                                                   class="form-control" required readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="email" class="control-label mb-1">Email</label>
+                                            <input id="email" name="email" type="email"
+                                                   class="form-control" required th:field="*{email}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="phone" class="control-label mb-1">Số điện thoại</label>
+                                            <input id="phone" name="phone" type="text"
+                                                   class="form-control" required th:field="*{phone}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="createDate" class="control-label mb-1">Ngày tạo</label>
+                                            <input id="createDate" name="createDate" type="text" th:value="${createDate}"
+                                                   class="form-control" required readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="password" class="control-label mb-1">Mật khẩu</label>
+                                            <input id="password" name="password" type="password"
+                                                   class="form-control" required th:field="*{password}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Hủy</button>
+                        <button type="submit" id="btnSubmitForm"
+                                class="btn btn-primary">Cập nhật thông tin</button>
+                    </div>
 
-                        <li class="page-item">
-                            <a class="page-link"
-                               th:href="@{/}"
-                               aria-label="Next">
-                                <span aria-hidden="true"> >> </span>
-                                <span class="sr-only">Last</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                </div>
             </div>
         </div>
+        <!-- end modal static -->
+        <!-- modal notification -->
+        <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog"
+             aria-labelledby="notificationModal" aria-hidden="true"
+             data-backdrop="notificationModal">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notificationModalLabel">Thông báo!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Bạn có chắc muốn xóa hóa đơn này?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="button" id="deleteAccBtn" class="btn btn-primary"
+                                onclick="deleteAccount()">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal notification -->
+</div>
+
+<script th:src="@{/admin-stt/js/account-mng.js}"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Jquery JS-->
+<script th:src="@{/admin-stt/vendor/jquery-3.2.1.min.js}"></script>
+<!-- Bootstrap JS-->
+<script th:src="@{/admin-stt/vendor/bootstrap-4.1/popper.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+<!-- Vendor JS       -->
+<script th:src="@{/admin-stt/vendor/slick/slick.min.js}">
+</script>
+<script th:src="@{/admin-stt/vendor/wow/wow.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/animsition/animsition.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+</script>
+<script th:src="@{/admin-stt/vendor/counter-up/jquery.waypoints.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/counter-up/jquery.counterup.min.js}">
+</script>
+<script th:src="@{/admin-stt/vendor/circle-progress/circle-progress.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/admin-stt/vendor/chartjs/Chart.bundle.min.js}"></script>
+<script th:src="@{/admin-stt/vendor/select2/select2.min.js}">
+</script>
+
+<!-- Main JS-->
+<script th:src="@{/admin-stt/js/main.js}"></script>
 </body>
 </html>
